@@ -1,0 +1,9 @@
+.sidebar-icon {
+  font-size: 18px;
+}
+@media (max-width: 1000px) {
+  .main-title-employee {
+    /* color: red !important; */
+    font-size: 14px !important;
+  }
+}
