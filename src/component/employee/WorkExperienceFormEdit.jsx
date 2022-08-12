@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-// import "./WorkExperienceFormEdit.css";
-// import { Form,Button } from "react-bootstrap";
+
 import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 
 class WorkExperienceForm extends Component {
+  // Initialize State
   state = {
-    // WorkExperienceData: this.props.editData["WorkExperienceName"],
-
     CompanyNameData: this.props.editData["CompanyName"],
     DesignationData: this.props.editData["Designation"],
     FromDateData: this.props.editData["FromDate"].slice(0, 10),
     ToDateData: this.props.editData["ToDate"].slice(0, 10),
   };
+  // func() for onchange
   onCompanyNameDataChange(e) {
     this.setState({ CompanyNameData: e.target.value });
   }

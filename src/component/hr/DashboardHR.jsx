@@ -19,6 +19,7 @@ import {
   faChair,
   faBuilding,
   faUser,
+  faDollarSign,
   faUserTie,
   faRupeeSign,
   faIndianRupeeSign,
@@ -29,6 +30,7 @@ import {
   faArchway,
 } from "@fortawesome/free-solid-svg-icons";
 
+// Functions to call any component
 function RoleHRF() {
   return <Role />;
 }
@@ -57,6 +59,7 @@ class DashboardHR extends Component {
     redirect: true,
     checked: true,
   };
+  // Func to handle either diplay sidebar or not
   handleChange = (checked) => {
     console.log("switch");
 
@@ -67,7 +70,6 @@ class DashboardHR extends Component {
     }
     this.setState({ checked });
   };
-
   render() {
     return (
       <Router>
@@ -80,7 +82,6 @@ class DashboardHR extends Component {
               onLogout={this.props.onLogout}
             />
           </div>
-
           <div id="main-non-nav">
             <div id="sidebar">
               <div id="sidebar-top-content" />
@@ -89,22 +90,22 @@ class DashboardHR extends Component {
                 HR
               </div>
               <ul className="navbar-ul">
-                <li>
+                <li className="list">
                   <Link to="/hr/employee">
                     <FontAwesomeIcon icon={faUser} className="sidebar-icon" />
-                    &nbsp;&nbsp;User
+                    &nbsp;&nbsp;&nbsp;User
                   </Link>
                 </li>
                 <li>
                   <Link to="/hr/salary">
                     <FontAwesomeIcon
-                      icon={faRupeeSign}
+                      icon={faDollarSign}
                       className="sidebar-icon"
                     />
-                    &nbsp;&nbsp;&nbsp;Salary
+                    &nbsp;&nbsp;&nbsp;&nbsp;Salary
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/hr/leave-application-hr">
                     <FontAwesomeIcon
                       icon={faFileAlt}
@@ -112,7 +113,7 @@ class DashboardHR extends Component {
                     />
                     &nbsp;&nbsp;&nbsp;Leave Application
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link to="/hr/company">
                     <FontAwesomeIcon icon={faCity} className="sidebar-icon" />
@@ -140,27 +141,32 @@ class DashboardHR extends Component {
                     &nbsp;&nbsp;Department
                   </Link>
                 </li>
+                <li>
+                  <Link to="/hr/leave-application-hr">
+                    <FontAwesomeIcon
+                      icon={faFileAlt}
+                      className="sidebar-icon"
+                    />
+                    &nbsp;&nbsp;&nbsp;Leave Application
+                  </Link>
+                </li>
               </ul>
             </div>
-
             <div id="main-area">
               <div id="sidebar-top-content" />
-
+              {/* Switch pages according to path */}
               <Switch>
                 <Route path="/hr/employee" component={EmployeeF} />
                 <Route path="/hr/salary" exact component={SalaryF} />
                 <Route path="/hr/company" exact component={CompanyF} />
                 <Route path="/hr/role" component={RoleHRF} />
-
                 <Route path="/hr/position" exact component={PositionF} />
                 <Route path="/hr/department" exact component={DepartmentF} />
-
                 <Route
                   path="/hr/leave-application-hr"
                   exact
                   component={LeaveApplicationHRF}
                 />
-
                 <Route render={() => <NotFound404 />} />
               </Switch>
             </div>

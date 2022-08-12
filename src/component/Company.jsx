@@ -4,7 +4,9 @@ import axios from "axios";
 import CompanyTable from "./CompanyTable.jsx";
 import CompanyForm from "./CompanyForm.jsx";
 import CompanyFormEdit from "./CompanyFormEdit.jsx";
+
 class Company extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
@@ -16,18 +18,21 @@ class Company extends Component {
       <React.Fragment>
         {this.state.table ? (
           this.state.editForm ? (
+            // Calling Component and passing props
             <CompanyFormEdit
               onCompanyEditUpdate={this.handleCompanyEditUpdate}
               onFormEditClose={this.handleEditFormClose}
               editData={this.state.editData}
             />
           ) : (
+            // Calling Component and passing props
             <CompanyTable
               onAddCompany={this.handleAddCompany}
               onEditCompany={this.handleEditCompany}
             />
           )
         ) : (
+          // Calling Component and passing props
           <CompanyForm
             onCompanySubmit={this.handleCompanySubmit}
             onFormClose={this.handleFormClose}
@@ -36,6 +41,7 @@ class Company extends Component {
       </React.Fragment>
     );
   }
+  // Func() to handle input data in role form edit page using axios (CRUD)
   handleCompanySubmit = (event) => {
     event.preventDefault();
     console.log("id", event.target[0].value, event.target[1].value);
@@ -51,6 +57,7 @@ class Company extends Component {
       ContactNo: event.target[6].value,
     };
     console.log(body);
+    // axios lib of react
     axios
       .post(process.env.REACT_APP_API_URL + "/api/company/", body, {
         headers: {
@@ -65,6 +72,7 @@ class Company extends Component {
         console.log(err);
       });
   };
+  // Form Handling functions (also setting state inside it)
   handleAddCompany = () => {
     console.log("clicked1");
     this.setState({ table: false });
@@ -86,6 +94,7 @@ class Company extends Component {
     console.log("clicked1");
     this.setState({ table: true });
   };
+  // Func() to send data to API using PUT
   handleCompanyEditUpdate = (info, newInfo) => {
     newInfo.preventDefault();
     let body = {
@@ -96,13 +105,8 @@ class Company extends Component {
       Email: newInfo.target[4].value,
       ContactPerson: newInfo.target[5].value,
       ContactNo: newInfo.target[6].value,
-      // FaxNo: newInfo.target[10].value,
-      // PanNo: newInfo.target[11].value,
-      // GSTNo: newInfo.target[12].value,
-      // CINNo: newInfo.target[13].value,
     };
-    // console.log("update", body);
-    // console.log(info);
+    // axios lib of react
     axios
       .put(
         process.env.REACT_APP_API_URL + "/api/company/" + info["_id"],

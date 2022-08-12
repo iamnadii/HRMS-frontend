@@ -11,6 +11,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -19,6 +20,7 @@ const override = css`
 `;
 
 class LeaveApplicationHRTable extends Component {
+  // Initialize state
   state = {
     leaveApplicationHRData: [],
     loading: true,
@@ -29,19 +31,16 @@ class LeaveApplicationHRTable extends Component {
         headerName: "Emloyee Code",
         field: "EmployeeCode",
         sortable: true,
-        // filter: true ,
       },
       {
         headerName: "Name",
         field: "Name",
         sortable: true,
-        // filter: true ,
       },
       {
         headerName: "Leave type",
         field: "Leavetype",
         sortable: true,
-        // filter: true ,
       },
       {
         headerName: "From Date",
@@ -63,13 +62,11 @@ class LeaveApplicationHRTable extends Component {
         headerName: "Reasonforleave",
         field: "Reasonforleave",
         sortable: true,
-        // filter: true ,
       },
       {
         headerName: "Status",
         field: "Status",
         sortable: true,
-        // filter: true ,
       },
 
       {
@@ -92,7 +89,6 @@ class LeaveApplicationHRTable extends Component {
       resizable: true,
       width: 170,
       filter: "agTextColumnFilter",
-      // filter: true ,
     },
     getRowHeight: function (params) {
       return 35;
@@ -100,17 +96,18 @@ class LeaveApplicationHRTable extends Component {
   };
   leaveApplicationHRObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadLeaveApplicationHRData = () => {
     axios
-      .get(process.env.REACT_APP_API_URL + "/api/leave-application-hr/", {
+      .get(process.env.REACT_APP_API_URL + "/api/leave/hr", {
         headers: {
           authorization: localStorage.getItem("token") || "",
         },
       })
+      // if response true then re-render the rest of data
       .then((response) => {
-        this.leaveApplicationHRObj = response.data;
         console.log("response", response.data);
+        this.leaveApplicationHRObj = response.data;
         this.setState({ leaveApplicationHRData: response.data });
         this.setState({ loading: false });
         this.rowDataT = [];
@@ -138,23 +135,20 @@ class LeaveApplicationHRTable extends Component {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onLeaveApplicationHRDelete = (e1, e2) => {
     console.log(e1, e2);
     if (window.confirm("Are you sure to delete this record? ") == true) {
       axios
         .delete(
-          process.env.REACT_APP_API_URL +
-            "/api/leave-application-hr/" +
-            e1 +
-            "/" +
-            e2,
+          process.env.REACT_APP_API_URL + "/api/leave/hr/" + e1 + "/" + e2,
           {
             headers: {
               authorization: localStorage.getItem("token") || "",
             },
           }
         )
+        // if response true then re-render the rest of data
         .then((res) => {
           this.componentDidMount();
         })
@@ -163,9 +157,11 @@ class LeaveApplicationHRTable extends Component {
         });
     }
   };
+  // func() for just calling another func()
   componentDidMount() {
     this.loadLeaveApplicationHRData();
   }
+  // re-render data
   renderButton(params) {
     console.log(params);
     return (
@@ -209,23 +205,12 @@ class LeaveApplicationHRTable extends Component {
 
         <div id="clear-both" />
         {!this.state.loading ? (
-          <div
-            id="table-div"
-            className="ag-theme-balham"
-            //   style={
-            //     {
-            //     height: "500px",
-            //     width: "100%"
-            //   }
-            // }
-          >
+          <div id="table-div" className="ag-theme-balham">
             <AgGridReact
               columnDefs={this.state.columnDefs}
               defaultColDef={this.state.defaultColDef}
               columnTypes={this.state.columnTypes}
               rowData={this.state.rowData}
-              // floatingFilter={true}
-              // onGridReady={this.onGridReady}
               pagination={true}
               paginationPageSize={10}
               getRowHeight={this.state.getRowHeight}
@@ -242,87 +227,6 @@ class LeaveApplicationHRTable extends Component {
             />
           </div>
         )}
-
-        {/* <div id="inner-table-div">
-          <table id="role-table">
-            <thead>
-              <tr>
-                <th width="13%">Emloyee Code</th>
-                <th width="13%">Name</th>
-                <th width="13%">Leavetype</th>
-                <th width="13%">FromDate</th>
-                <th width="13%">ToDate</th>
-                <th width="13%">Reasonforleave</th>
-                <th width="13%">Status</th>
-                <th width="4.5%" />
-                <th width="4.5%" />
-              </tr>
-            </thead>
-
-            {!this.state.loading ? (
-              <tbody>
-                {filteredLeaveA.map((data, index) => (
-                  <tr key={index}>
-                    <td>{data["employee"][0]["EmployeeCode"]}</td>
-                    <td>
-                      {data["employee"][0]["FirstName"] +
-                        " " +
-                        data["employee"][0]["LastName"]}
-                    </td>
-                    <td>{data["Leavetype"]}</td>
-                    <td>{data["FromDate"].slice(0, 10)}</td>
-                    <td>{data["ToDate"].slice(0, 10)}</td>
-                    <td>{data["Reasonforleave"]}</td>
-                    <td>{this.status(data["Status"])}</td>
-                    <td>
-                      <FontAwesomeIcon
-                        icon={faEdit}
-                        onClick={() =>
-                          this.props.onEditLeaveApplicationHR(data)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        onClick={() =>
-                          this.onLeaveApplicationHRDelete(
-                            data["employee"][0]["_id"],
-                            data["_id"]
-                          )
-                        }
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            ) : (
-              <tbody>
-                <tr>
-                  <td />
-                  <td />
-                  <td />
-                  <td>
-                    <div id="loading-bar">
-                      <BarLoader
-                        css={override}
-                        sizeUnit={"px"}
-                        size={150}
-                        color={"#0098f3"}
-                        loading={true}
-                      />
-                    </div>
-                  </td>
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                  <td />
-                </tr>
-              </tbody>
-            )}
-          </table>
-        </div> */}
       </div>
     );
   }

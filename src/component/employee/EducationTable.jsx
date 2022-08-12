@@ -12,6 +12,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -20,6 +21,7 @@ const override = css`
 `;
 
 class EducationTable extends Component {
+  // Initialize state
   state = {
     educationData: [],
     loading: true,
@@ -74,7 +76,7 @@ class EducationTable extends Component {
   };
   educationObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadEducationData = () => {
     console.log(this.props.data);
     axios
@@ -88,6 +90,7 @@ class EducationTable extends Component {
           },
         }
       )
+      // if response true then re-render the rest of data
       .then((response) => {
         this.educationObj = response.data;
         console.log("response", response.data);
@@ -110,7 +113,7 @@ class EducationTable extends Component {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onEducationDelete = (e1, e2) => {
     console.log(e1, e2);
     if (window.confirm("Are you sure to delete this record? ") == true) {
@@ -123,6 +126,7 @@ class EducationTable extends Component {
             },
           }
         )
+        // if response true then re-render the rest of data
         .then((res) => {
           this.componentDidMount();
         })
@@ -134,6 +138,7 @@ class EducationTable extends Component {
   componentDidMount() {
     this.loadEducationData();
   }
+  // re-render data
   renderButton(params) {
     console.log(params);
     if (this.props.back) {
@@ -197,23 +202,12 @@ class EducationTable extends Component {
         <div id="clear-both" />
 
         {!this.state.loading ? (
-          <div
-            id="table-div"
-            className="ag-theme-balham"
-            //   style={
-            //     {
-            //     height: "500px",
-            //     width: "100%"
-            //   }
-            // }
-          >
+          <div id="table-div" className="ag-theme-balham">
             <AgGridReact
               columnDefs={this.state.columnDefs}
               defaultColDef={this.state.defaultColDef}
               columnTypes={this.state.columnTypes}
               rowData={this.state.rowData}
-              // floatingFilter={true}
-              // onGridReady={this.onGridReady}
               pagination={true}
               paginationPageSize={10}
               getRowHeight={this.state.getRowHeight}

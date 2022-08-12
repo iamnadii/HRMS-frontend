@@ -10,6 +10,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -18,6 +19,7 @@ const override = css`
 `;
 
 class LeaveApplicationEmpTable extends Component {
+  // Initialize state
   state = {
     leaveApplicationEmpData: [],
     loading: true,
@@ -27,8 +29,6 @@ class LeaveApplicationEmpTable extends Component {
         headerName: "Leave type",
         field: "Leavetype",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
 
       {
@@ -37,8 +37,6 @@ class LeaveApplicationEmpTable extends Component {
         sortable: true,
         type: ["dateColumn"],
         filter: "agDateColumnFilter",
-        // width: 150,
-        // filter: true ,
       },
       {
         headerName: "ToDate",
@@ -46,22 +44,16 @@ class LeaveApplicationEmpTable extends Component {
         sortable: true,
         type: ["dateColumn"],
         filter: "agDateColumnFilter",
-        // width: 150,
-        // filter: true ,
       },
       {
         headerName: "Reasonforleave",
         field: "Reasonforleave",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
       {
         headerName: "Status",
         field: "Status",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
 
       {
@@ -85,7 +77,6 @@ class LeaveApplicationEmpTable extends Component {
       resizable: true,
       width: 235,
       filter: "agTextColumnFilter",
-      // filter: true ,
     },
     getRowHeight: function (params) {
       return 35;
@@ -93,7 +84,7 @@ class LeaveApplicationEmpTable extends Component {
   };
   leaveApplicationEmpObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadLeaveApplicationEmpData = () => {
     axios
       .get(
@@ -106,13 +97,14 @@ class LeaveApplicationEmpTable extends Component {
           },
         }
       )
+      // if response true then re-render the rest of data
       .then((response) => {
         this.leaveApplicationEmpObj = response.data;
         console.log("response", response.data);
         this.setState({ leaveApplicationEmpData: response.data });
         this.setState({ loading: false });
         this.rowDataT = [];
-        // let data=this.educationObj.education["0"];
+
         this.leaveApplicationEmpObj.leaveApplication.map((data) => {
           let temp = {
             data,
@@ -131,7 +123,7 @@ class LeaveApplicationEmpTable extends Component {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onLeaveApplicationEmpDelete = (e1, e2) => {
     console.log(e1, e2);
     if (window.confirm("Are you sure to delete this record? ") === true) {
@@ -144,6 +136,7 @@ class LeaveApplicationEmpTable extends Component {
             },
           }
         )
+        // if response true then re-render the rest of data
         .then((res) => {
           console.log(res);
           this.componentDidMount();
@@ -153,10 +146,11 @@ class LeaveApplicationEmpTable extends Component {
         });
     }
   };
+  // func() for just calling another func()
   componentDidMount() {
     this.loadLeaveApplicationEmpData();
   }
-
+  // re-render data
   renderButton(params) {
     console.log(params);
     return (
@@ -219,23 +213,12 @@ class LeaveApplicationEmpTable extends Component {
         <div id="clear-both" />
 
         {!this.state.loading ? (
-          <div
-            id="table-div"
-            className="ag-theme-balham"
-            //   style={
-            //     {
-            //     height: "500px",
-            //     width: "100%"
-            //   }
-            // }
-          >
+          <div id="table-div" className="ag-theme-balham">
             <AgGridReact
               columnDefs={this.state.columnDefs}
               defaultColDef={this.state.defaultColDef}
               columnTypes={this.state.columnTypes}
               rowData={this.state.rowData}
-              // floatingFilter={true}
-              // onGridReady={this.onGridReady}
               pagination={true}
               paginationPageSize={10}
               getRowHeight={this.state.getRowHeight}

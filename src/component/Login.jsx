@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import "./Login.css";
 import Logo from "../img/logo.png";
 import { css } from "@emotion/core";
-// First way to import
 import { ScaleLoader } from "react-spinners";
+
+// Class Base Component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -12,7 +13,6 @@ const override = css`
 
 class Login extends Component {
   render() {
-    // let value=(this.props.pass) ? undefined : "";
     return (
       <div>
         <div className="container">
@@ -25,35 +25,30 @@ class Login extends Component {
             </div>
 
             <div id="outer-login-form-div">
+              {/* Form to take action upon input */}
               <form action="" method="" onSubmit={this.props.onSubmit}>
-                {/* <div className="form-group"> */}
                 <input
                   className="login-form-input"
                   type="text"
-                  // className="form-control"
                   placeholder="Email"
                   required="required"
                   name="Username"
                 />
-                {/* </div> */}
-                {/* <div className="form-group"> */}
+
                 <input
                   className="login-form-input"
                   type="password"
-                  // className="form-control"
                   placeholder="Password"
                   required="required"
                 />
-                {/* </div> */}
-                {/* <div className="form-group"> */}
+
                 <input
                   className="login-form-input"
                   type="submit"
-                  // className="btn btn-primary btn-block btn-lg btn-mystyle"
                   value="Sign in"
                   id="submitBtn"
                 />
-                {/* </div> */}
+
                 {!this.props.pass ? (
                   <p className="alert">Invalid UserName or Password</p>
                 ) : (

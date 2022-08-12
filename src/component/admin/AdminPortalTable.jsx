@@ -11,6 +11,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -19,6 +20,7 @@ const override = css`
 `;
 
 class AdminPortalTable extends Component {
+  // Initialize state
   state = {
     portalData: [],
     loading: true,
@@ -28,16 +30,12 @@ class AdminPortalTable extends Component {
         headerName: "Portal",
         field: "PortalName",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
 
       {
         headerName: "Status",
         field: "Status",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
 
       {
@@ -60,7 +58,6 @@ class AdminPortalTable extends Component {
       resizable: true,
       width: 590,
       filter: "agTextColumnFilter",
-      // filter: true ,
     },
     getRowHeight: function (params) {
       return 35;
@@ -68,14 +65,15 @@ class AdminPortalTable extends Component {
   };
   portalObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadPortalData = () => {
     axios
-      .get(process.env.REACT_APP_API_URL + "/api/admin/portal", {
+      .get(process.env.REACT_APP_API_URL + "/api/admin/portal/", {
         headers: {
           authorization: localStorage.getItem("token") || "",
         },
       })
+      // if response true then re-render the rest of data
       .then((response) => {
         this.portalObj = response.data;
         // }
@@ -99,7 +97,7 @@ class AdminPortalTable extends Component {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onPortalDelete = (e) => {
     console.log(e);
     if (
@@ -113,6 +111,7 @@ class AdminPortalTable extends Component {
             authorization: localStorage.getItem("token") || "",
           },
         })
+        // if response true then re-render the rest of data
         .then((res) => {
           this.componentDidMount();
         })
@@ -121,9 +120,11 @@ class AdminPortalTable extends Component {
         });
     }
   };
+  // func() for just calling another func()
   componentDidMount() {
     this.loadPortalData();
   }
+  // re-render data
   renderButton(params) {
     console.log(params);
     return (
@@ -158,23 +159,12 @@ class AdminPortalTable extends Component {
         <div id="clear-both" />
 
         {!this.state.loading ? (
-          <div
-            id="table-div"
-            className="ag-theme-balham"
-            //   style={
-            //     {
-            //     height: "500px",
-            //     width: "100%"
-            //   }
-            // }
-          >
+          <div id="table-div" className="ag-theme-balham">
             <AgGridReact
               columnDefs={this.state.columnDefs}
               defaultColDef={this.state.defaultColDef}
               columnTypes={this.state.columnTypes}
               rowData={this.state.rowData}
-              // floatingFilter={true}
-              // onGridReady={this.onGridReady}
               pagination={true}
               paginationPageSize={10}
               getRowHeight={this.state.getRowHeight}

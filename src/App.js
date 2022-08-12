@@ -13,6 +13,7 @@ import { HashRouter as Router, Route, Redirect } from "react-router-dom";
 import history from "./history.js";
 
 class App extends Component {
+  // Initialize state with particular values
   state = {
     data: {},
     loading: false,
@@ -21,6 +22,7 @@ class App extends Component {
     firstTimeAlert: true,
   };
   componentDidMount() {
+    // Updating the state against input data
     this.setState({
       data: {
         _id: localStorage.getItem("_id") || "",
@@ -38,6 +40,7 @@ class App extends Component {
             exact
             path="/login"
             render={(props) =>
+              // Comparing Acc no with data in state and then redirect it according to roles.
               this.state.data["Account"] == 1 ? (
                 <Redirect to="/admin" />
               ) : this.state.data["Account"] == 2 ? (
@@ -56,6 +59,7 @@ class App extends Component {
           <Route
             path="/admin"
             render={(props) =>
+              // Comparing the condition and then redirect accordingly
               this.state.data["Account"] == 1 ? (
                 <DashboardAdmin
                   data={this.state.data}
@@ -69,6 +73,7 @@ class App extends Component {
           <Route
             path="/hr"
             render={(props) =>
+              // Comparing the condition and then redirect accordingly
               this.state.data["Account"] == 2 ? (
                 <DashboardHR
                   data={this.state.data}
@@ -82,6 +87,7 @@ class App extends Component {
           <Route
             path="/employee"
             render={(props) =>
+              // Comparing the condition and then redirect accordingly
               this.state.data["Account"] == 3 ? (
                 <DashboardEmployee
                   data={this.state.data}
@@ -98,32 +104,35 @@ class App extends Component {
       </Router>
     );
   }
+  // Func for handling submit
   handleSubmit = (event) => {
     event.preventDefault();
-
     this.setState({ pass: true });
     this.setState({ loading: true });
+    // Passing parameters to login func()
     this.login(event.target[0].value, event.target[1].value);
     event.target.reset();
   };
+  // Func for handling logout
   handleLogout = (event) => {
     console.log("logout");
     localStorage.clear();
     this.componentDidMount();
   };
+  // Func to send input value to DB
   login = (id, pass) => {
     let bodyLogin = {
       email: id,
       password: pass,
     };
-
+    // Using axios library for API CRUD
     axios
       .post(process.env.REACT_APP_API_URL + "/api/login", bodyLogin)
       .then((res) => {
         console.log(jwt.decode(res.data));
         var decodedData = jwt.decode(res.data);
         localStorage.setItem("token", res.data);
-
+        // Check res and pass values
         if (
           (res == undefined ||
             res == null ||

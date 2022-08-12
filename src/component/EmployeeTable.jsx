@@ -16,6 +16,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -24,6 +25,7 @@ const override = css`
 `;
 
 class AdminEmployeeTable extends Component {
+  // Initialize state
   state = {
     employeeData: [],
     loading: true,
@@ -62,12 +64,6 @@ class AdminEmployeeTable extends Component {
       {
         headerName: "Last Name",
         field: "LastName",
-        sortable: true,
-        width: 110,
-      },
-      {
-        headerName: "Gender",
-        field: "Gender",
         sortable: true,
         width: 110,
       },
@@ -144,7 +140,7 @@ class AdminEmployeeTable extends Component {
   };
   employeeObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadEmployeeData = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/employee", {
@@ -153,57 +149,55 @@ class AdminEmployeeTable extends Component {
         },
       })
       .then((response) => {
-        console.log("response", response.data);
         this.employeeObj = response.data;
+        console.log("response", response.data);
         this.setState({ employeeData: response.data });
         this.setState({ loading: false });
         this.rowDataT = [];
-        // this.employeeObj.map((data) => {
-        let data = this.employeeObj;
-        let temp = {
-          data,
-          Email: data["Email"],
-          Password: data["Password"],
-          Account:
-            data["Account"] == 1
-              ? "Admin"
-              : data["Account"] == 2
-              ? "HR"
-              : data["Account"] == 3
-              ? "Employee"
-              : "",
-          RoleName: data["role"][0]["RoleName"] || "Not Avaiable",
-          FirstName: data["FirstName"] || "Not Avaiable",
-          MiddleName: data["MiddleName"] || "Not Avaiable",
-          LastName: data["LastName"] || "Not Avaiable",
-          Gender: data["Gender"] || "Not Avaiable",
-          DOB: data["DOB"].slice(0, 10) || "Not Avaiable",
-          ContactNo: data["ContactNo"] || "Not Avaiable",
-          EmployeeCode: data["EmployeeCode"] || "Not Avaiable",
-          DepartmentName:
-            data["department"][0]["DepartmentName"] || "Not Avaiable",
-          PositionName: data["position"][0]["PositionName"] || "Not Avaiable",
-          DateOfJoining: data["DateOfJoining"].slice(0, 10) || "Not Avaiable",
-        };
-        this.rowDataT.push(temp);
-        // });
+        this.employeeObj.map((data) => {
+          let temp = {
+            data,
+            Email: data["Email"],
+            Password: data["Password"],
+            Account:
+              data["Account"] == 1
+                ? "Admin"
+                : data["Account"] == 2
+                ? "HR"
+                : data["Account"] == 3
+                ? "Employee"
+                : "",
+            RoleName: data["role"][0]["RoleName"],
+            FirstName: data["FirstName"],
+            MiddleName: data["MiddleName"],
+            LastName: data["LastName"],
+            DOB: data["DOB"].slice(0, 10),
+            ContactNo: data["ContactNo"],
+            EmployeeCode: data["EmployeeCode"],
+            DepartmentName: data["department"][0]["DepartmentName"],
+            PositionName: data["position"][0]["PositionName"],
+            DateOfJoining: data["DateOfJoining"].slice(0, 10),
+          };
+
+          this.rowDataT.push(temp);
+        });
         this.setState({ rowData: this.rowDataT });
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onEmployeeDelete = (e) => {
     console.log(e);
     if (window.confirm("Are you sure to delete this record? ") == true) {
-      // window.alert("You are not allowed to perform this operation");
       axios
         .delete(process.env.REACT_APP_API_URL + "/api/employee/" + e, {
           headers: {
             authorization: localStorage.getItem("token") || "",
           },
         })
+        // if response true then re-render the rest of data
         .then((res) => {
           this.componentDidMount();
         })
@@ -212,12 +206,14 @@ class AdminEmployeeTable extends Component {
         });
     }
   };
+  // func() calling another func()
   componentDidMount() {
     this.loadEmployeeData();
   }
   handleClick = (e) => {
     console.log(e);
   };
+  // re-render data
   renderInfoButton(params) {
     console.log(params);
     return (
@@ -229,6 +225,7 @@ class AdminEmployeeTable extends Component {
       </div>
     );
   }
+  // re-render data
   renderButton(params) {
     console.log(params);
     return (
@@ -238,6 +235,7 @@ class AdminEmployeeTable extends Component {
       />
     );
   }
+  // re-render data
   renderEditButton(params) {
     console.log(params);
     return (

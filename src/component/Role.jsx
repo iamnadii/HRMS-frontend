@@ -1,99 +1,77 @@
 import React, { Component } from "react";
-import "./Role.css";
 import axios from "axios";
+
 import RoleTable from "./RoleTable.jsx";
 import RoleForm from "./RoleForm.jsx";
 import RoleFormEdit from "./RoleFormEdit.jsx";
-// import { HashRouter as Router, Route, Link } from "react-router-dom";
-
-// function RoleTableF() {
-//   return <RoleTable/>;
-// }
-// function RoleFormF() {
-//   return  <RoleForm onRoleSubmit={handleRoleSubmit}/>;
-// }
-
-// function handleRoleSubmit(e) {
-//   e.preventDefault();
-//   console.log(e);
-
-// }
 
 class Role extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
-    editData: {}
+    editData: {},
   };
 
   render() {
-    // let value=(this.props.pass) ? undefined : "";<i class="fas fa-plus"></i>
     return (
-      //  <Router>
       <React.Fragment>
         {this.state.table ? (
           this.state.editForm ? (
+            // Calling Component and passing props
             <RoleFormEdit
               onRoleEditUpdate={this.handleRoleEditUpdate}
               onFormEditClose={this.handleEditFormClose}
               editData={this.state.editData}
             />
           ) : (
-              <RoleTable
-                onAddRole={this.handleAddRole}
-                onEditRole={this.handleEditRole}
-              />
-            )
-        ) : (
-            <RoleForm
-              onRoleSubmit={this.handleRoleSubmit}
-              onFormClose={this.handleFormClose}
+            // Calling Component and passing props
+            <RoleTable
+              onAddRole={this.handleAddRole}
+              onEditRole={this.handleEditRole}
             />
-          )}
-
-        {/* <div>fenil</div> */}
-        {/* <Route path="/admin/role/table" exact component={RoleTable} /> */}
-        {/* <Route path="/admin/role/form" exact component={() => <RoleForm onRoleSubmit={this.handleRoleSubmit} />} /> */}
-
-        {/* <RoleTable/> */}
+          )
+        ) : (
+          // Calling Component and passing props
+          <RoleForm
+            onRoleSubmit={this.handleRoleSubmit}
+            onFormClose={this.handleFormClose}
+          />
+        )}
       </React.Fragment>
-
-      //  </Router>
     );
   }
-  handleRoleSubmit = event => {
+  // Func() to handle input data in role form edit page using axios (CRUD)
+  handleRoleSubmit = (event) => {
     event.preventDefault();
     console.log("id", event.target[0].value, event.target[1].value);
     this.setState({ table: true });
 
     let body = {
       CompanyID: event.target[0].value,
-      RoleName: event.target[1].value
+      RoleName: event.target[1].value,
     };
-    //  let body= "CompanyID=" + event.target[0].value + "&Role=" + event.target[1].value;
-    //  let body= "FenilKaneria";
+    // axios lib of react
     axios
       .post(process.env.REACT_APP_API_URL + "/api/role", body, {
         headers: {
-          authorization: localStorage.getItem("token") || ""
-        }
+          authorization: localStorage.getItem("token") || "",
+        },
       })
-      .then(res => {
+      .then((res) => {
         this.setState({ table: false });
         this.setState({ table: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-    // this.setState({ loading: true });
-    // this.login(event.target[0].value, event.target[1].value);
-    // event.target.reset();
   };
+  // Form Handling functions (also setting state inside it)
   handleAddRole = () => {
     console.log("clicked1");
     this.setState({ table: false });
   };
-  handleEditRole = e => {
+  handleEditRole = (e) => {
     console.log(e);
     console.log("clicked6");
     this.setState({ editForm: true });
@@ -111,28 +89,26 @@ class Role extends Component {
     console.log("clicked1");
     this.setState({ table: true });
   };
+  // Func() to send data to API using PUT
   handleRoleEditUpdate = (info, formData1, formData2) => {
-    // this.setState({ table: true });
     let body = {
-      // ...info,CompanyID:formData1,Role:formData2
-
       CompanyID: formData1,
       RoleName: formData2,
-
     };
     console.log("update", body);
+    // axios lib of react
     axios
       .put(process.env.REACT_APP_API_URL + "/api/role/" + info["_id"], body, {
         headers: {
-          authorization: localStorage.getItem("token") || ""
-        }
+          authorization: localStorage.getItem("token") || "",
+        },
       })
-      .then(res => {
+      .then((res) => {
         // this.componentDidMount();
         this.setState({ table: false });
         this.setState({ table: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 

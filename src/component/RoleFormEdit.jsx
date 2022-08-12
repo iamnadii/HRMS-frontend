@@ -3,30 +3,34 @@ import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 
 class RoleForm extends Component {
+  // Initialize State
   state = {
     RoleData: this.props.editData["RoleName"],
-    companyInfo: []
+    companyInfo: [],
   };
+  // func() for onchange
   onChange(e) {
     this.setState({ RoleData: e.target.value });
   }
 
   companyData = [];
+  // func() for getting data through API
   loadCompanyInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/company", {
         headers: {
-          authorization: localStorage.getItem("token") || ""
-        }
+          authorization: localStorage.getItem("token") || "",
+        },
       })
-      .then(response => {
+      .then((response) => {
         this.companyData = response.data;
         this.setState({ companyInfo: response.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
+  // func() for just calling another func()
   componentWillMount() {
     this.loadCompanyInfo();
   }
@@ -36,9 +40,10 @@ class RoleForm extends Component {
       <div>
         <h2 id="role-form-title">Edit Role Details</h2>
         <div id="role-form-outer-div">
+          {/* Using Bootstrap component */}
           <Form
             id="form"
-            onSubmit={e =>
+            onSubmit={(e) =>
               this.props.onRoleEditUpdate(
                 this.props.editData,
                 e.target[0].value,
@@ -79,7 +84,7 @@ class RoleForm extends Component {
                   name="RoleName"
                   required
                   value={this.state.RoleData}
-                  onChange={value => this.onChange(value)}
+                  onChange={(value) => this.onChange(value)}
                 />
               </Col>
             </Form.Group>

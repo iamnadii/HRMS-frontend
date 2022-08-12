@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import "./AdminPortalForm.css";
 import { Form, Button, Col, Row } from "react-bootstrap";
-// import Form from 'react-bootstrap/Form'
 
 class AdminPortalForm extends Component {
   state = {
-    status: ""
+    status: "",
   };
-  handleChange = event => {
+  // handle the change
+  handleChange = (event) => {
     this.setState({
-      status: event.target.value
+      status: event.target.value,
     });
   };
   render() {
@@ -17,6 +17,7 @@ class AdminPortalForm extends Component {
       <div>
         <h2 id="role-form-title">Add Portal Details</h2>
         <div id="role-form-outer-div">
+          {/* Using Bootstrap component */}
           <Form id="form" onSubmit={this.props.onPortalSubmit}>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>

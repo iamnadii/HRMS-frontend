@@ -4,16 +4,9 @@ import axios from "axios";
 import { Form, Button, Col, Row } from "react-bootstrap";
 
 class SalaryFormEdit extends Component {
+  // Initialize State
   state = {
     salaryData: [],
-
-    // status: '',
-    // portalsInfo:[],
-    // SalaryTitleData:this.props.editData["SalaryTitle"],
-    // SalaryURLData:this.props.editData["SalaryURL"],
-    // SalaryDescriptionData:this.props.editData["SalaryDesc"],
-    // EstimatedTimeData:this.props.editData["EstimatedTime"],
-    // RemarkData:this.props.editData["Remark"],
 
     BasicSalaryData: this.props.editData["salary"][0]["BasicSalary"],
     BankNameData: this.props.editData["salary"][0]["BankName"],
@@ -21,12 +14,10 @@ class SalaryFormEdit extends Component {
     ReAccountNoData: this.props.editData["salary"][0]["AccountNo"],
     AccountHolderNameData:
       this.props.editData["salary"][0]["AccountHolderName"],
-    // IFSCcodeData: this.props.editData["salary"][0]["IFSCcode"],
-    TaxDeductionData: this.props.editData["salary"][0]["TaxDeduction"],
 
-    // value={this.state.SalaryTitleData}
-    // onChange={value => this.onSalaryTitleDataChange(value)}
+    TaxDeductionData: this.props.editData["salary"][0]["TaxDeduction"],
   };
+  // func() for onchange
   onBasicSalaryDataChange(e) {
     this.setState({ BasicSalaryData: e.target.value });
   }
@@ -42,13 +33,11 @@ class SalaryFormEdit extends Component {
   onAccountHolderNameDataChange(e) {
     this.setState({ AccountHolderNameData: e.target.value });
   }
-  // onIFSCcodeDataChange(e) {
-  //   this.setState({ IFSCcodeData: e.target.value });
-  // }
+
   onTaxDeductionDataChange(e) {
     this.setState({ TaxDeductionData: e.target.value });
   }
-
+  // func() for getting data through API
   loadSalaryInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/salary", {
@@ -63,20 +52,16 @@ class SalaryFormEdit extends Component {
         console.log(error);
       });
   };
-
+  // func() for just calling another func()
   componentWillMount() {
     this.loadSalaryInfo();
-    // this.loadPositionInfo();
-    // this.loadDepartmentInfo();
   }
   render() {
     return (
       <React.Fragment>
-        <h2 id="role-form-title">
-          Edit Salary Details
-          {/* {JSON.stringify(this.props.editData ) } */}
-        </h2>
+        <h2 id="role-form-title">Edit Salary Details</h2>
         <div id="role-form-outer-div">
+          {/* Using Bootstrap component */}
           <Form
             id="form"
             onSubmit={(e) =>
@@ -89,7 +74,6 @@ class SalaryFormEdit extends Component {
               </Form.Label>
               <Col sm={10} className="form-input">
                 <Form.Control as="select" required>
-                  {/* <option value="" disabled selected>Select your option</option> */}
                   {this.state.salaryData.map((data, index) => (
                     <option
                       key={index}
@@ -185,21 +169,6 @@ class SalaryFormEdit extends Component {
               </Col>
             </Form.Group>
 
-            {/* <Form.Group as={Row}>
-              <Form.Label column sm={2}>
-              IFSC Code
-              </Form.Label>
-              <Col sm={10} className="form-input">
-                <Form.Control
-                  type="text"
-                  placeholder="IFSC Code"
-                  required
-                  value={this.state.IFSCcodeData}
-        onChange={value => this.onIFSCcodeDataChange(value)}
-                />
-              </Col>
-            </Form.Group> */}
-
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
                 Tax Deduction
@@ -229,8 +198,6 @@ class SalaryFormEdit extends Component {
             </Form.Group>
           </Form>
         </div>
-        {/* </div>
-        </div> */}
       </React.Fragment>
     );
   }

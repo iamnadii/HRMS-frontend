@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-// import "./FamilyInfoFormEdit.css";
-// import { Form,Button } from "react-bootstrap";
+
 import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 
 class FamilyInfoForm extends Component {
+  // Initialize State
   state = {
-    // FamilyInfoData: this.props.editData["FamilyInfoName"],
-
     NameData: this.props.editData["Name"],
     RelationshipData: this.props.editData["Relationship"],
     DOBData: this.props.editData["DOB"].slice(0, 10),
-    OccupationData: this.props.editData["Occupation"]
+    OccupationData: this.props.editData["Occupation"],
   };
+  // func() for onchange
   onNameDataChange(e) {
     this.setState({ NameData: e.target.value });
   }
@@ -26,8 +25,7 @@ class FamilyInfoForm extends Component {
     this.setState({ DOBData: e.target.value });
   }
 
-  componentWillMount() {
-  }
+  componentWillMount() {}
 
   render() {
     return (
@@ -37,13 +35,13 @@ class FamilyInfoForm extends Component {
         <div id="role-form-outer-div">
           <Form
             id="form"
-            onSubmit={e =>
+            onSubmit={(e) =>
               this.props.onFamilyInfoEditUpdate(this.props.editData, e)
             }
           >
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
-              Name
+                Name
               </Form.Label>
               <Col sm={10} className="form-input">
                 <Form.Control
@@ -51,13 +49,13 @@ class FamilyInfoForm extends Component {
                   placeholder="Name"
                   required
                   value={this.state.NameData}
-                  onChange={value => this.onNameDataChange(value)}
+                  onChange={(value) => this.onNameDataChange(value)}
                 />
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
-              Relationship
+                Relationship
               </Form.Label>
               <Col sm={10} className="form-input">
                 <Form.Control
@@ -65,13 +63,13 @@ class FamilyInfoForm extends Component {
                   placeholder="Relationship"
                   required
                   value={this.state.RelationshipData}
-                  onChange={value => this.onRelationshipDataChange(value)}
+                  onChange={(value) => this.onRelationshipDataChange(value)}
                 />
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
-              DOB
+                DOB
               </Form.Label>
               <Col sm={10} className="form-input">
                 <Form.Control
@@ -79,13 +77,13 @@ class FamilyInfoForm extends Component {
                   placeholder="Grade"
                   required
                   value={this.state.DOBData}
-                  onChange={value => this.onDOBDataChange(value)}
+                  onChange={(value) => this.onDOBDataChange(value)}
                 />
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
-              Occupation
+                Occupation
               </Form.Label>
               <Col sm={10} className="form-input">
                 <Form.Control
@@ -93,7 +91,7 @@ class FamilyInfoForm extends Component {
                   placeholder=" Occupation"
                   required
                   value={this.state.OccupationData}
-                  onChange={value => this.onOccupationDataChange(value)}
+                  onChange={(value) => this.onOccupationDataChange(value)}
                 />
               </Col>
             </Form.Group>

@@ -1,36 +1,31 @@
 import React, { Component } from "react";
 import "./DepartmentForm.css";
-// import { Form,Button } from "react-bootstrap";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 
 class DepartmentForm extends Component {
   state = {
-    companyInfo: []
+    companyInfo: [],
   };
   companyData = [];
+  // func() calling API using GET method
   loadCompanyInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/company", {
         headers: {
-          authorization: localStorage.getItem("token") || ""
-        }
+          authorization: localStorage.getItem("token") || "",
+        },
       })
-      .then(response => {
-        // if(response.data.length==0){this.roleObj=["temp"];}
-        // else{
-
-        // }
+      .then((response) => {
         this.companyData = response.data;
-
-        // this.portalsData=this.portalsData.filter((data)=>data["Status"]==1);
 
         this.setState({ companyInfo: response.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
+  // func() calling another func()
   componentWillMount() {
     this.loadCompanyInfo();
   }
@@ -40,6 +35,7 @@ class DepartmentForm extends Component {
         <h2 id="role-form-title">Add Department Details</h2>
 
         <div id="role-form-outer-div">
+          {/* Using Bootstrap component */}
           <Form id="form" onSubmit={this.props.onDepartmentSubmit}>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>

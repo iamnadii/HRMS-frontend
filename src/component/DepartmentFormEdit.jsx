@@ -1,54 +1,50 @@
 import React, { Component } from "react";
-// import "./DepartmentFormEdit.css";
-// import { Form,Button } from "react-bootstrap";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 
 class DepartmentForm extends Component {
+  // Initialize State
   state = {
     DepartmentData: this.props.editData["DepartmentName"],
-    companyInfo: []
+    companyInfo: [],
   };
+  // func() for onchange
   onChange(e) {
     this.setState({ DepartmentData: e.target.value });
   }
   companyData = [];
+  // func() for getting data through API
   loadCompanyInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/company", {
         headers: {
-          authorization: localStorage.getItem("token") || ""
-        }
+          authorization: localStorage.getItem("token") || "",
+        },
       })
-      .then(response => {
-        // if(response.data.length==0){this.roleObj=["temp"];}
-        // else{
-
-        // }
+      .then((response) => {
         this.companyData = response.data;
-
-        // this.portalsData=this.portalsData.filter((data)=>data["Status"]==1);
 
         this.setState({ companyInfo: response.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
+  // func() for just calling another func()
   componentWillMount() {
     this.loadCompanyInfo();
   }
 
   render() {
-    // let value=(this.props.pass) ? undefined : "";<i class="fas fa-plus"></i>
     return (
       <div>
         <h2 id="role-form-title">Edit Department Details</h2>
 
         <div id="role-form-outer-div">
+          {/* Using Bootstrap component */}
           <Form
             id="form"
-            onSubmit={e =>
+            onSubmit={(e) =>
               this.props.onDepartmentEditUpdate(this.props.editData, e)
             }
           >
@@ -86,7 +82,7 @@ class DepartmentForm extends Component {
                   name="DepartmentName"
                   required
                   value={this.state.DepartmentData}
-                  onChange={value => this.onChange(value)}
+                  onChange={(value) => this.onChange(value)}
                 />
               </Col>
             </Form.Group>

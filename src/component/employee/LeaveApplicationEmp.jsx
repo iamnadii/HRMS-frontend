@@ -4,7 +4,9 @@ import axios from "axios";
 import LeaveApplicationEmpTable from "./LeaveApplicationEmpTable.jsx";
 import LeaveApplicationEmpForm from "./LeaveApplicationEmpForm.jsx";
 import LeaveApplicationEmpFormEdit from "./LeaveApplicationEmpFormEdit.jsx";
+
 class LeaveApplicationEmp extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
@@ -14,11 +16,9 @@ class LeaveApplicationEmp extends Component {
   render() {
     return (
       <React.Fragment>
-        {/* <h1>iiiiiiiiiinnnnnnnnnnnnnn{
-          JSON.stringify(this.props.data)}</h1> */}
-
         {this.state.table ? (
           this.state.editForm ? (
+            // Calling Component and passing props
             <LeaveApplicationEmpFormEdit
               onLeaveApplicationEmpEditUpdate={
                 this.handleLeaveApplicationEmpEditUpdate
@@ -27,6 +27,7 @@ class LeaveApplicationEmp extends Component {
               editData={this.state.editData}
             />
           ) : (
+            // Calling Component and passing props
             <LeaveApplicationEmpTable
               onAddLeaveApplicationEmp={this.handleAddLeaveApplicationEmp}
               onEditLeaveApplicationEmp={this.handleEditLeaveApplicationEmp}
@@ -34,6 +35,7 @@ class LeaveApplicationEmp extends Component {
             />
           )
         ) : (
+          // Calling Component and passing props
           <LeaveApplicationEmpForm
             onLeaveApplicationEmpSubmit={this.handleLeaveApplicationEmpSubmit}
             onFormClose={this.handleFormClose}
@@ -43,23 +45,20 @@ class LeaveApplicationEmp extends Component {
       </React.Fragment>
     );
   }
+  // Func() to handle input data in role form edit page using axios (CRUD)
   handleLeaveApplicationEmpSubmit = (event) => {
     event.preventDefault();
     console.log("id", event.target[0].value, event.target[1].value);
     this.setState({ table: true });
 
     let body = {
-      //  CompanyName: event.target[0].value,
-      //  Designation:  event.target[1].value,
-      //  FromDate:  event.target[2].value,
-      //  ToDate:  event.target[3].value,
-
       Leavetype: event.target[0].value,
       FromDate: event.target[1].value,
       ToDate: event.target[2].value,
       Reasonforleave: event.target[3].value,
       Status: event.target[4].value,
     };
+    // axios lib of react
     axios
       .post(
         process.env.REACT_APP_API_URL +
@@ -80,6 +79,7 @@ class LeaveApplicationEmp extends Component {
         console.log(err);
       });
   };
+  // Form Handling functions (also setting state inside it)
   handleAddLeaveApplicationEmp = () => {
     console.log("clicked1");
     this.setState({ table: false });
@@ -99,10 +99,7 @@ class LeaveApplicationEmp extends Component {
     console.log("clicked5");
     this.setState({ editForm: false });
   };
-  // handleFormClose = () => {
-  //   console.log("clicked1");
-  //   this.setState({ table: true });
-  // };
+  // Func() to send data to API using PUT
   handleLeaveApplicationEmpEditUpdate = (info, newInfo) => {
     newInfo.preventDefault();
     console.log("zero data", newInfo.target[0].value);
@@ -114,6 +111,7 @@ class LeaveApplicationEmp extends Component {
       Status: newInfo.target[4].value,
     };
     console.log("update", body);
+    // axios lib of react
     axios
       .put(
         process.env.REACT_APP_API_URL + "/api/leave/emp/" + info["_id"],

@@ -4,6 +4,7 @@ import axios from "axios";
 import { Form, Button, Col, Row } from "react-bootstrap";
 
 class EmployeeFormEdit extends Component {
+  // Initialize State
   state = {
     roleData: [],
     positionData: [],
@@ -19,6 +20,7 @@ class EmployeeFormEdit extends Component {
     DateOfJoiningData: this.props.editData["DateOfJoining"].slice(0, 10),
     TerminateDateData: this.props.editData["TerminateDate"].slice(0, 10),
   };
+  // func() for onchange
   onEmailDataChange(e) {
     this.setState({ EmailData: e.target.value });
   }
@@ -38,7 +40,7 @@ class EmployeeFormEdit extends Component {
   onEmployeeCodeDataChange(e) {
     this.setState({ EmployeeCodeData: e.target.value });
   }
-
+  // func() for getting data through API
   loadRoleInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/role", {
@@ -53,6 +55,7 @@ class EmployeeFormEdit extends Component {
         console.log(error);
       });
   };
+  // func() for getting data through API
   loadPositionInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/position", {
@@ -67,6 +70,7 @@ class EmployeeFormEdit extends Component {
         console.log(error);
       });
   };
+  // func() for getting data through API
   loadDepartmentInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/department", {
@@ -81,6 +85,7 @@ class EmployeeFormEdit extends Component {
         console.log(error);
       });
   };
+  // func() for onchange
   onGenderChange = (e) => {
     this.setState({ GenderData: e.target.value });
     this.props.onGenderChange(e);
@@ -101,6 +106,7 @@ class EmployeeFormEdit extends Component {
     this.setState({ GenderData: e.target.value });
     this.props.onGenderChange(e);
   };
+  // func() for just calling another func()
   componentWillMount() {
     this.loadRoleInfo();
     this.loadPositionInfo();
@@ -111,6 +117,7 @@ class EmployeeFormEdit extends Component {
       <React.Fragment>
         <h2 id="role-form-title">Edit Employee Details</h2>
         <div id="role-form-outer-div">
+          {/* Using Bootstrap component */}
           <Form
             id="form"
             onSubmit={(e) =>
@@ -131,21 +138,6 @@ class EmployeeFormEdit extends Component {
                 />
               </Col>
             </Form.Group>
-
-            {/* <Form.Group as={Row}>
-              <Form.Label column sm={2}>
-                Password
-              </Form.Label>
-              <Col sm={10} className="form-input">
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  required
-                  value={this.state.PasswordData}
-                  onChange={value => this.onPasswordDataChange(value)}
-                />
-              </Col>
-            </Form.Group> */}
 
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
@@ -276,7 +268,6 @@ class EmployeeFormEdit extends Component {
                   type="date"
                   placeholder="DOB"
                   required
-                  //   value={this.props.editData["DOB"].slice(0, 10)}
                   value={this.state.DOBData}
                   onChange={(value) => this.onDOBDataChange(value)}
                 />
@@ -368,7 +359,6 @@ class EmployeeFormEdit extends Component {
                   type="date"
                   placeholder="Date Of Joining"
                   required
-                  //   value={this.props.editData["DateOfJoining"].slice(0, 10)}
                   value={this.state.DateOfJoiningData}
                   onChange={(value) => this.onDateOfJoiningDataChange(value)}
                 />
@@ -382,7 +372,6 @@ class EmployeeFormEdit extends Component {
                 <Form.Control
                   type="date"
                   placeholder="Terminate Date"
-                  //   value={this.props.editData["TerminateDate"].slice(0, 10)}
                   value={this.state.TerminateDateData}
                   onChange={(value) => this.onTerminateDateDataChange(value)}
                 />

@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import "./Employee.css";
 import axios from "axios";
+import { HashRouter as Router, Route } from "react-router-dom";
 import EmployeeTable from "./EmployeeTable.jsx";
 import EmployeeForm from "./EmployeeForm.jsx";
 import EmployeeFormEdit from "./EmployeeFormEdit.jsx";
 import EmployeeInfo from "./EmployeeInfo.jsx";
-import { HashRouter as Router, Route } from "react-router-dom";
 import PersonalInfo from "./employee/PersonalInfo.jsx";
 import Education from "./employee/Education.jsx";
 import FamilyInfo from "./employee/FamilyInfo.jsx";
 import WorkExperience from "./employee/WorkExperience.jsx";
 
 class Employee extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
@@ -31,6 +32,7 @@ class Employee extends Component {
             <React.Fragment>
               {this.state.table ? (
                 this.state.editForm ? (
+                  // Calling Component and passing props
                   <EmployeeFormEdit
                     onEmployeeEditUpdate={this.handleEmployeeEditUpdate}
                     onFormEditClose={this.handleEditFormClose}
@@ -38,18 +40,21 @@ class Employee extends Component {
                     onGenderChange={this.handleEditFormGenderChange}
                   />
                 ) : !this.state.EmpInfoBool ? (
+                  // Calling Component and passing props
                   <EmployeeTable
                     onAddEmployee={this.handleAddEmployee}
                     onEditEmployee={this.handleEditEmployee}
                     onEmpInfo={this.handleEmpInfo}
                   />
                 ) : (
+                  // Calling Component and passing props
                   <EmployeeInfo
                     data={this.state.EmpInfo}
                     onBack={this.handleBack}
                   />
                 )
               ) : (
+                // Calling Component and passing props
                 <EmployeeForm
                   onEmployeeSubmit={this.handleEmployeeSubmit}
                   onFormClose={this.handleFormClose}
@@ -91,6 +96,7 @@ class Employee extends Component {
       </Router>
     );
   }
+  // Func() to handle input data in role form edit page using axios (CRUD)
   handleEmpInfo = (e) => {
     console.log("info", e);
 
@@ -123,6 +129,7 @@ class Employee extends Component {
       DateOfJoining: event.target[14].value,
       TerminateDate: event.target[15].value,
     };
+    // axios lib of react
     axios
       .post(process.env.REACT_APP_API_URL + "/api/employee", body, {
         headers: {
@@ -137,6 +144,7 @@ class Employee extends Component {
         console.log(err);
       });
   };
+  // Form Handling functions (also setting state inside it)
   handleAddEmployee = () => {
     console.log("clicked1");
     this.setState({ table: false });
@@ -160,6 +168,7 @@ class Employee extends Component {
     console.log("clicked1");
     this.setState({ table: true });
   };
+  // Func() to send data to API using PUT
   handleEmployeeEditUpdate = (info, newInfo) => {
     newInfo.preventDefault();
     let body = {
@@ -179,6 +188,7 @@ class Employee extends Component {
       TerminateDate: newInfo.target[14].value,
     };
     console.log("update", body);
+    // axios lib of react
     axios
       .put(
         process.env.REACT_APP_API_URL + "/api/employee/" + info["_id"],

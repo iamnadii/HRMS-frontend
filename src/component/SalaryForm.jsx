@@ -7,7 +7,7 @@ class SalaryForm extends Component {
   state = {
     employeeData: [],
   };
-
+  // func() calling API using GET method
   loadEmployeeInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/employee", {
@@ -22,11 +22,9 @@ class SalaryForm extends Component {
         console.log(error);
       });
   };
-
+  // func() calling another func()
   componentWillMount() {
     this.loadEmployeeInfo();
-    // this.loadPositionInfo();
-    // this.loadDepartmentInfo();
   }
 
   render() {
@@ -34,6 +32,7 @@ class SalaryForm extends Component {
       <div>
         <h2 id="role-form-title">Add Salary Details</h2>
         <div id="role-form-outer-div">
+          {/* Using Bootstrap component */}
           <Form id="form" onSubmit={this.props.onSalarySubmit}>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
@@ -114,19 +113,6 @@ class SalaryForm extends Component {
               </Col>
             </Form.Group>
 
-            {/* <Form.Group as={Row}>
-              <Form.Label column sm={2}>
-              IFSC Code
-              </Form.Label>
-              <Col sm={10} className="form-input">
-                <Form.Control
-                  type="text"
-                  placeholder="IFSC Code"
-                  required
-                />
-              </Col>
-            </Form.Group> */}
-
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
                 Tax Deduction
@@ -154,9 +140,6 @@ class SalaryForm extends Component {
             </Form.Group>
           </Form>
         </div>
-
-        {/* </div>
-        </div> */}
       </div>
     );
   }

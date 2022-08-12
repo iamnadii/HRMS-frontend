@@ -4,11 +4,13 @@ import axios from "axios";
 import { Form, Button, Col, Row } from "react-bootstrap";
 
 class EmployeeForm extends Component {
+  // Initialize state
   state = {
     roleData: [],
     positionData: [],
     departmentData: [],
   };
+  // func() calling API using GET method
   loadRoleInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/role", {
@@ -23,6 +25,7 @@ class EmployeeForm extends Component {
         console.log(error);
       });
   };
+  // func() calling API using GET method
   loadPositionInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/position", {
@@ -37,6 +40,7 @@ class EmployeeForm extends Component {
         console.log(error);
       });
   };
+  // func() calling API using GET method
   loadDepartmentInfo = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/department", {
@@ -51,6 +55,7 @@ class EmployeeForm extends Component {
         console.log(error);
       });
   };
+  // func() calling another func()
   componentWillMount() {
     this.loadRoleInfo();
     this.loadPositionInfo();
@@ -62,6 +67,7 @@ class EmployeeForm extends Component {
       <div>
         <h2 id="role-form-title">Add Employee Details</h2>
         <div id="role-form-outer-div">
+          {/* Using Bootstrap component */}
           <Form id="form" onSubmit={this.props.onEmployeeSubmit}>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
@@ -259,9 +265,6 @@ class EmployeeForm extends Component {
             </Form.Group>
           </Form>
         </div>
-
-        {/* </div>
-        </div> */}
       </div>
     );
   }

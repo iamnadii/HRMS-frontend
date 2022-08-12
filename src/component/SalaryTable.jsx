@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import "./AdminSalaryTable.css";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +10,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -19,6 +19,7 @@ const override = css`
 `;
 
 class AdminSalaryTable extends Component {
+  // Initialize state
   state = {
     salaryData: [],
     loading: true,
@@ -56,7 +57,6 @@ class AdminSalaryTable extends Component {
         headerName: "Tax Deduction",
         field: "TaxDeduction",
         sortable: true,
-        // filter: true ,
       },
       {
         headerName: "",
@@ -78,7 +78,6 @@ class AdminSalaryTable extends Component {
       resizable: true,
       width: 200,
       filter: "agTextColumnFilter",
-      // filter: true ,
     },
     getRowHeight: function (params) {
       return 35;
@@ -86,7 +85,7 @@ class AdminSalaryTable extends Component {
   };
   salaryObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadSalaryData = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/salary/", {
@@ -94,6 +93,7 @@ class AdminSalaryTable extends Component {
           authorization: localStorage.getItem("token") || "",
         },
       })
+      // if response true then re-render the rest of data
       .then((response) => {
         this.salaryObj = response.data;
         console.log("response", response.data);
@@ -125,7 +125,7 @@ class AdminSalaryTable extends Component {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onSalaryDelete = (e) => {
     console.log(e);
     if (window.confirm("Are you sure to delete this record? ") == true) {
@@ -135,6 +135,7 @@ class AdminSalaryTable extends Component {
             authorization: localStorage.getItem("token") || "",
           },
         })
+        // if response true then re-render the rest of data
         .then((res) => {
           this.componentDidMount();
         })
@@ -143,9 +144,11 @@ class AdminSalaryTable extends Component {
         });
     }
   };
+  // func() for just calling another func()
   componentDidMount() {
     this.loadSalaryData();
   }
+  // re-render data
   renderButton(params) {
     console.log(params);
     return (

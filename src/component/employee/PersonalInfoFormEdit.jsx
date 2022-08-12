@@ -4,14 +4,8 @@ import axios from "axios";
 import { Form, Button, Col, Row } from "react-bootstrap";
 
 class PersonalInfoFormEdit extends Component {
+  // Initialize State
   state = {
-    // status: '',
-    // portalsInfo:[],
-    // PersonalInfoTitleData:this.props.editData["PersonalInfoTitle"],
-    // PersonalInfoURLData:this.props.editData["PersonalInfoURL"],
-    // PersonalInfoDescriptionData:this.props.editData["PersonalInfoDesc"],
-    // EstimatedTimeData:this.props.editData["EstimatedTime"],
-    // RemarkData:this.props.editData["Remark"],
     GenderData: this.props.editData["Gender"],
 
     EmailData: this.props.editData["Email"],
@@ -21,14 +15,12 @@ class PersonalInfoFormEdit extends Component {
     DOBData: this.props.editData["DOB"].slice(0, 10),
     ContactNoData: this.props.editData["ContactNo"],
     EmergencyContactNoData: this.props.editData["EmergencyContactNo"] || "",
-    PANcardNoData: this.props.editData["PANcardNo"] || "",
+
     HobbiesData: this.props.editData["Hobbies"] || "",
     PresentAddressData: this.props.editData["PresentAddress"] || "",
-    PermanetAddressData: this.props.editData["PermanetAddress"] || ""
-
-    // value={this.state.PersonalInfoTitleData}
-    // onChange={value => this.onPersonalInfoTitleDataChange(value)}
+    PermanetAddressData: this.props.editData["PermanetAddress"] || "",
   };
+  // func() for onchange
   onEmailDataChange(e) {
     this.setState({ EmailData: e.target.value });
   }
@@ -64,24 +56,25 @@ class PersonalInfoFormEdit extends Component {
     this.setState({ PermanetAddressData: e.target.value });
   }
 
-  onGenderChange = e => {
+  onGenderChange = (e) => {
     this.setState({ GenderData: e.target.value });
     this.props.onGenderChange(e);
   };
-  onDOBDataChange = e => {
+  onDOBDataChange = (e) => {
     console.log(e.target.value);
     this.setState({ DOBData: e.target.value });
   };
 
-  componentWillMount() {}   
+  componentWillMount() {}
   render() {
     return (
       <React.Fragment>
         <h2 id="role-form-title">Edit PersonalInfo Details</h2>
         <div id="role-form-outer-div">
+          {/* Using Bootstrap Component */}
           <Form
             id="form"
-            onSubmit={e =>
+            onSubmit={(e) =>
               this.props.onPersonalInfoEditUpdate(this.props.editData, e)
             }
           >
@@ -165,7 +158,7 @@ class PersonalInfoFormEdit extends Component {
                   placeholder="Contact No "
                   required
                   value={this.state.ContactNoData}
-                  onChange={value => this.onContactNoDataChange(value)}
+                  onChange={(value) => this.onContactNoDataChange(value)}
                 />
               </Col>
             </Form.Group>
@@ -179,7 +172,9 @@ class PersonalInfoFormEdit extends Component {
                   placeholder="Emergency Contact No"
                   required
                   value={this.state.EmergencyContactNoData}
-                  onChange={value => this.onEmergencyContactNoDataChange(value)}
+                  onChange={(value) =>
+                    this.onEmergencyContactNoDataChange(value)
+                  }
                 />
               </Col>
             </Form.Group>
@@ -194,21 +189,21 @@ class PersonalInfoFormEdit extends Component {
                   placeholder="Email"
                   required
                   value={this.state.EmailData}
-                  onChange={value => this.onEmailDataChange(value)}
+                  onChange={(value) => this.onEmailDataChange(value)}
                 />
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>
-                PAN Card No
+                CNIC
               </Form.Label>
               <Col sm={10} className="form-input">
                 <Form.Control
                   type="text"
-                  placeholder="PAN Card No"
+                  placeholder="CNIC"
                   required
                   value={this.state.PANcardNoData}
-                  onChange={value => this.onPANcardNoDataChange(value)}
+                  onChange={(value) => this.onPANcardNoDataChange(value)}
                 />
               </Col>
             </Form.Group>
@@ -221,9 +216,8 @@ class PersonalInfoFormEdit extends Component {
                   type="date"
                   placeholder="DOB"
                   required
-                  //   value={this.props.editData["DOB"].slice(0, 10)}
                   value={this.state.DOBData}
-                  onChange={value => this.onDOBDataChange(value)}
+                  onChange={(value) => this.onDOBDataChange(value)}
                 />
               </Col>
             </Form.Group>
@@ -285,15 +279,6 @@ class PersonalInfoFormEdit extends Component {
                   >
                     O-
                   </option>
-                  {/* 
-    A+
-    A-
-    B+
-    B-
-    AB+
-    AB-
-    O+
-    O- */}
                 </Form.Control>
               </Col>
             </Form.Group>
@@ -308,7 +293,7 @@ class PersonalInfoFormEdit extends Component {
                   placeholder="Hobbies"
                   required
                   value={this.state.HobbiesData}
-                  onChange={value => this.onHobbiesDataChange(value)}
+                  onChange={(value) => this.onHobbiesDataChange(value)}
                 />
               </Col>
             </Form.Group>
@@ -324,7 +309,7 @@ class PersonalInfoFormEdit extends Component {
                   plassholder="Present Address"
                   required
                   value={this.state.PresentAddressData}
-                  onChange={value => this.onPresentAddressDataChange(value)}
+                  onChange={(value) => this.onPresentAddressDataChange(value)}
                 />
               </Col>
             </Form.Group>
@@ -339,7 +324,7 @@ class PersonalInfoFormEdit extends Component {
                   plassholder=" Permanet Address"
                   required
                   value={this.state.PermanetAddressData}
-                  onChange={value => this.onPermanetAddressDataChange(value)}
+                  onChange={(value) => this.onPermanetAddressDataChange(value)}
                 />
               </Col>
             </Form.Group>
@@ -358,8 +343,6 @@ class PersonalInfoFormEdit extends Component {
             </Form.Group>
           </Form>
         </div>
-        {/* </div>
-        </div> */}
       </React.Fragment>
     );
   }

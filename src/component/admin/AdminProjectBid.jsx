@@ -4,64 +4,45 @@ import axios from "axios";
 import AdminProjectBidTable from "./AdminProjectBidTable.jsx";
 import AdminProjectBidForm from "./AdminProjectBidForm.jsx";
 import AdminProjectBidFormEdit from "./AdminProjectBidFormEdit.jsx";
-// import { HashRouter as Router, Route, Link } from "react-router-dom";
-
-// function AdminProjectBidTableF() {
-//   return <AdminProjectBidTable/>;
-// }
-// function AdminProjectBidFormF() {
-//   return  <AdminProjectBidForm onProjectBidSubmit={handleProjectBidSubmit}/>;
-// }
-
-// function handleProjectBidSubmit(e) {
-//   e.preventDefault();
-//   console.log(e);
-
-// }
 
 class AdminProjectBid extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
-    editData: {}
+    editData: {},
   };
 
   render() {
-    // let value=(this.props.pass) ? undefined : "";<i class="fas fa-plus"></i>
     return (
-      //  <Router>
       <React.Fragment>
         {this.state.table ? (
           this.state.editForm ? (
+            // Calling Component and passing props
             <AdminProjectBidFormEdit
               onProjectBidEditUpdate={this.handleProjectBidEditUpdate}
               onFormEditClose={this.handleEditFormClose}
               editData={this.state.editData}
             />
           ) : (
+            // Calling Component and passing props
             <AdminProjectBidTable
               onAddProjectBid={this.handleAddProjectBid}
               onEditProjectBid={this.handleEditProjectBid}
             />
           )
         ) : (
+          // Calling Component and passing props
           <AdminProjectBidForm
             onProjectBidSubmit={this.handleProjectBidSubmit}
             onFormClose={this.handleFormClose}
           />
         )}
-
-        {/* <div>fenil</div> */}
-        {/* <Route path="/admin/ProjectBid/table" exact component={AdminProjectBidTable} /> */}
-        {/* <Route path="/admin/ProjectBid/form" exact component={() => <AdminProjectBidForm onProjectBidSubmit={this.handleProjectBidSubmit} />} /> */}
-
-        {/* <AdminProjectBidTable/> */}
-        </React.Fragment>
-
-      //  </Router>
+      </React.Fragment>
     );
   }
-  handleProjectBidSubmit = event => {
+  // Func() to handle input data in role form edit page using axios (CRUD)
+  handleProjectBidSubmit = (event) => {
     event.preventDefault();
     console.log("id", event.target[0].value, event.target[1].value);
     this.setState({ table: true });
@@ -69,41 +50,35 @@ class AdminProjectBid extends Component {
     let body = {
       ProjectTitle: event.target[0].value,
       ProjectURL: event.target[1].value,
-      ProjectDesc:event.target[2].value,
-      Portal_ID:event.target[3].value,
-      EstimatedTime:event.target[4].value,
-      EstimatedCost:event.target[5].value,
-      ResourceID:event.target[6].value,
-      Status:event.target[7].value,
-      Remark:event.target[8].value,
-
-    
-    
+      ProjectDesc: event.target[2].value,
+      Portal_ID: event.target[3].value,
+      EstimatedTime: event.target[4].value,
+      EstimatedCost: event.target[5].value,
+      ResourceID: event.target[6].value,
+      Status: event.target[7].value,
+      Remark: event.target[8].value,
     };
-    //  let body= "CompanyID=" + event.target[0].value + "&ProjectBid=" + event.target[1].value;
-    //  let body= "FenilKaneria";
+    // axios lib of react
     axios
-      .post(process.env.REACT_APP_API_URL + "/api/admin/project-bid", body, {
+      .post(process.env.REACT_APP_API_URL + "/api/admin/project/", body, {
         headers: {
-          authorization: localStorage.getItem("token") || ""
-        }
+          authorization: localStorage.getItem("token") || "",
+        },
       })
-      .then(res => {
+      .then((res) => {
         this.setState({ table: false });
         this.setState({ table: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-    // this.setState({ loading: true });
-    // this.login(event.target[0].value, event.target[1].value);
-    // event.target.reset();
   };
+  // Form Handling functions (also setting state inside it)
   handleAddProjectBid = () => {
     console.log("clicked1");
     this.setState({ table: false });
   };
-  handleEditProjectBid = e => {
+  handleEditProjectBid = (e) => {
     console.log(e);
     console.log("clicked6");
     this.setState({ editForm: true });
@@ -121,34 +96,36 @@ class AdminProjectBid extends Component {
     console.log("clicked1");
     this.setState({ table: true });
   };
-  handleProjectBidEditUpdate = (info,editInfo) => {
-    // this.setState({ table: true });
+  // Func() to send data to API using PUT
+  handleProjectBidEditUpdate = (info, editInfo) => {
     let body = {
-      // ...info,CompanyID:formData1,ProjectBid:formData2
-      // _id: info["_id"],
       ProjectTitle: editInfo.target[0].value,
       ProjectURL: editInfo.target[1].value,
-      ProjectDesc:editInfo.target[2].value,
-      Portal_ID:editInfo.target[3].value,
-      EstimatedTime:editInfo.target[4].value,
-      EstimatedCost:editInfo.target[5].value,
-      ResourceID:editInfo.target[6].value,
-      Status:editInfo.target[7].value,
-      Remark:editInfo.target[8].value,
+      ProjectDesc: editInfo.target[2].value,
+      Portal_ID: editInfo.target[3].value,
+      EstimatedTime: editInfo.target[4].value,
+      EstimatedCost: editInfo.target[5].value,
+      ResourceID: editInfo.target[6].value,
+      Status: editInfo.target[7].value,
+      Remark: editInfo.target[8].value,
     };
     console.log("update", body);
+    // axios lib of react
     axios
-      .put(process.env.REACT_APP_API_URL + "/api/admin/project-bid/" + info["_id"], body, {
-        headers: {
-          authorization: localStorage.getItem("token") || ""
+      .put(
+        process.env.REACT_APP_API_URL + "/api/admin/project/" + info["_id"],
+        body,
+        {
+          headers: {
+            authorization: localStorage.getItem("token") || "",
+          },
         }
-      })
-      .then(res => {
-        // this.componentDidMount();
+      )
+      .then((res) => {
         this.setState({ table: false });
         this.setState({ table: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 

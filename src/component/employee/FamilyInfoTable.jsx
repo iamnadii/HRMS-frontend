@@ -12,6 +12,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -20,6 +21,7 @@ const override = css`
 `;
 
 class FamilyInfoTable extends Component {
+  // Initialize state
   state = {
     familyInfoData: [],
     loading: true,
@@ -29,15 +31,11 @@ class FamilyInfoTable extends Component {
         headerName: "Name",
         field: "Name",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
       {
         headerName: "Relationship",
         field: "Relationship",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
       {
         headerName: "DOB",
@@ -45,15 +43,11 @@ class FamilyInfoTable extends Component {
         sortable: true,
         type: ["dateColumn"],
         filter: "agDateColumnFilter",
-        // width: 150,
-        // filter: true ,
       },
       {
         headerName: "Occupation",
         field: "Occupation",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
 
       {
@@ -76,7 +70,6 @@ class FamilyInfoTable extends Component {
       resizable: true,
       width: 295,
       filter: "agTextColumnFilter",
-      // filter: true ,
     },
     getRowHeight: function (params) {
       return 35;
@@ -84,7 +77,7 @@ class FamilyInfoTable extends Component {
   };
   familyInfoObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadFamilyInfoData = () => {
     axios
       .get(
@@ -97,13 +90,14 @@ class FamilyInfoTable extends Component {
           },
         }
       )
+      // if response true then re-render the rest of data
       .then((response) => {
         this.familyInfoObj = response.data;
         console.log("response", response.data);
         this.setState({ familyInfoData: response.data });
         this.setState({ loading: false });
         this.rowDataT = [];
-        // let data=this.familyInfoObj.familyInfo["0"];
+
         this.familyInfoObj.familyInfo.map((data) => {
           let temp = {
             data,
@@ -121,7 +115,7 @@ class FamilyInfoTable extends Component {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onFamilyInfoDelete = (e1, e2) => {
     console.log(e1, e2);
     if (window.confirm("Are you sure to delete this record? ") == true) {
@@ -134,6 +128,7 @@ class FamilyInfoTable extends Component {
             },
           }
         )
+        // if response true then re-render the rest of data
         .then((res) => {
           this.componentDidMount();
         })
@@ -145,7 +140,7 @@ class FamilyInfoTable extends Component {
   componentDidMount() {
     this.loadFamilyInfoData();
   }
-
+  // re-render data
   renderButton(params) {
     console.log(params);
     if (this.props.back) {
@@ -209,23 +204,12 @@ class FamilyInfoTable extends Component {
         <div id="clear-both" />
 
         {!this.state.loading ? (
-          <div
-            id="table-div"
-            className="ag-theme-balham"
-            //   style={
-            //     {
-            //     height: "500px",
-            //     width: "100%"
-            //   }
-            // }
-          >
+          <div id="table-div" className="ag-theme-balham">
             <AgGridReact
               columnDefs={this.state.columnDefs}
               defaultColDef={this.state.defaultColDef}
               columnTypes={this.state.columnTypes}
               rowData={this.state.rowData}
-              // floatingFilter={true}
-              // onGridReady={this.onGridReady}
               pagination={true}
               paginationPageSize={10}
               getRowHeight={this.state.getRowHeight}

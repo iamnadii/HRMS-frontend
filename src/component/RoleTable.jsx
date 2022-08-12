@@ -11,6 +11,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -19,6 +20,7 @@ const override = css`
 `;
 
 class RoleTable extends Component {
+  // Initialize state
   state = {
     roleData: [],
     loading: true,
@@ -28,16 +30,12 @@ class RoleTable extends Component {
         headerName: "Company Name",
         field: "CompanyName",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
 
       {
         headerName: "Role",
         field: "RoleName",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
 
       {
@@ -60,7 +58,6 @@ class RoleTable extends Component {
       resizable: true,
       width: 590,
       filter: "agTextColumnFilter",
-      // filter: true ,
     },
     getRowHeight: function (params) {
       return 35;
@@ -68,7 +65,7 @@ class RoleTable extends Component {
   };
   roleObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadRoleData = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/role", {
@@ -76,6 +73,7 @@ class RoleTable extends Component {
           authorization: localStorage.getItem("token") || "",
         },
       })
+      // if response true then re-render the rest of data
       .then((response) => {
         this.roleObj = response.data;
 
@@ -99,6 +97,7 @@ class RoleTable extends Component {
         console.log(error);
       });
   };
+  // func() using API Delete method to delete data
   onRoleDelete = (e) => {
     console.log(e);
     if (window.confirm("Are you sure to delete this record ? ") == true) {
@@ -108,6 +107,7 @@ class RoleTable extends Component {
             authorization: localStorage.getItem("token") || "",
           },
         })
+        // if response true then re-render the rest of data
         .then((res) => {
           console.log("res", res);
           this.componentDidMount();
@@ -121,10 +121,11 @@ class RoleTable extends Component {
         });
     }
   };
-
+  // func() for just calling another func()
   componentDidMount() {
     this.loadRoleData();
   }
+  // re-render data
   renderButton(params) {
     console.log(params);
     return (
@@ -159,23 +160,12 @@ class RoleTable extends Component {
         </Button>
         <div id="clear-both" />
         {!this.state.loading ? (
-          <div
-            id="table-div"
-            className="ag-theme-balham"
-            //   style={
-            //     {
-            //     height: "500px",
-            //     width: "100%"
-            //   }
-            // }
-          >
+          <div id="table-div" className="ag-theme-balham">
             <AgGridReact
               columnDefs={this.state.columnDefs}
               defaultColDef={this.state.defaultColDef}
               columnTypes={this.state.columnTypes}
               rowData={this.state.rowData}
-              // floatingFilter={true}
-              // onGridReady={this.onGridReady}
               pagination={true}
               paginationPageSize={10}
               getRowHeight={this.state.getRowHeight}
@@ -192,63 +182,6 @@ class RoleTable extends Component {
             />
           </div>
         )}
-
-        {/* <div id="inner-table-div">
-          <table id="role-table">
-            <thead>
-              <tr>
-                <th width="30%">Company</th>
-                <th width="30%">Role</th>
-                <th width="20%" />
-                <th width="20%" />
-              </tr>
-            </thead>
-
-            {!this.state.loading ? (
-              <React.Fragment>
-                {this.roleObj.map((data, index) => (
-                  <tbody key={index}>
-                    <tr>
-                      <td>{data["company"][0]["CompanyName"]}</td>
-                      <td>{data["RoleName"]}</td>
-                      <td>
-                        <FontAwesomeIcon
-                          icon={faEdit}
-                          onClick={() => this.props.onEditRole(data)}
-                        />
-                      </td>
-                      <td>
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          onClick={() => this.onRoleDelete(data["_id"])}
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                ))}
-              </React.Fragment>
-            ) : (
-              <tbody>
-                <tr>
-                  <td />
-                  <td>
-                    <div id="loading-bar">
-                      <BarLoader
-                        css={override}
-                        sizeUnit={"px"}
-                        size={150}
-                        color={"#0098f3"}
-                        loading={true}
-                      />
-                    </div>
-                  </td>
-                  <td />
-                  <td />
-                </tr>
-              </tbody>
-            )}
-          </table>
-        </div> */}
       </div>
     );
   }

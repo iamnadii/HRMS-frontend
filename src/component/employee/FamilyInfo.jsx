@@ -4,46 +4,48 @@ import axios from "axios";
 import FamilyInfoTable from "./FamilyInfoTable.jsx";
 import FamilyInfoForm from "./FamilyInfoForm.jsx";
 import FamilyInfoFormEdit from "./FamilyInfoFormEdit.jsx";
+
 class FamilyInfo extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
     editData: {},
-
   };
 
   render() {
     return (
       <React.Fragment>
-        {/* <h1>iiiiiiiiiinnnnnnnnnnnnnn{
-          JSON.stringify(this.props.data)}</h1> */}
-
         {this.state.table ? (
           this.state.editForm ? (
+            // Calling Component and passing props
             <FamilyInfoFormEdit
               onFamilyInfoEditUpdate={this.handleFamilyInfoEditUpdate}
               onFormEditClose={this.handleEditFormClose}
               editData={this.state.editData}
             />
           ) : (
-              <FamilyInfoTable
-                onAddFamilyInfo={this.handleAddFamilyInfo}
-                onEditFamilyInfo={this.handleEditFamilyInfo}
-                data={this.props.data}
-                back={this.props.back}
-              />
-            )
-        ) : (
-            <FamilyInfoForm
-              onFamilyInfoSubmit={this.handleFamilyInfoSubmit}
-              onFormClose={this.handleFormClose}
-              onGenderChange={this.handleAddFormGenderChange}
+            // Calling Component and passing props
+            <FamilyInfoTable
+              onAddFamilyInfo={this.handleAddFamilyInfo}
+              onEditFamilyInfo={this.handleEditFamilyInfo}
+              data={this.props.data}
+              back={this.props.back}
             />
-          )}
+          )
+        ) : (
+          // Calling Component and passing props
+          <FamilyInfoForm
+            onFamilyInfoSubmit={this.handleFamilyInfoSubmit}
+            onFormClose={this.handleFormClose}
+            onGenderChange={this.handleAddFormGenderChange}
+          />
+        )}
       </React.Fragment>
     );
   }
-  handleFamilyInfoSubmit = event => {
+  // Func() to handle input data in role form edit page using axios (CRUD)
+  handleFamilyInfoSubmit = (event) => {
     event.preventDefault();
     console.log("id", event.target[0].value, event.target[1].value);
     this.setState({ table: true });
@@ -55,29 +57,36 @@ class FamilyInfo extends Component {
       Occupation: event.target[3].value,
     };
     axios
-      .post(process.env.REACT_APP_API_URL + "/api/family-info/" + this.props.data["_id"], body, {
-        headers: {
-          authorization: localStorage.getItem("token") || ""
+      .post(
+        process.env.REACT_APP_API_URL +
+          "/api/family-info/" +
+          this.props.data["_id"],
+        body,
+        {
+          headers: {
+            authorization: localStorage.getItem("token") || "",
+          },
         }
-      })
-      .then(res => {
+      )
+      .then((res) => {
         this.setState({ table: false });
         this.setState({ table: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
+  // Form Handling functions (also setting state inside it)
   handleAddFamilyInfo = () => {
     console.log("clicked1");
     this.setState({ table: false });
   };
-  handleEditFamilyInfo = e => {
+  handleEditFamilyInfo = (e) => {
     console.log(e);
     console.log("clicked6");
     this.setState({ editForm: true });
     this.setState({ editData: e });
-    this.setState({ editFormGender: e["Gender"] })
+    this.setState({ editFormGender: e["Gender"] });
   };
   handleFormClose = () => {
     console.log("clicked1");
@@ -87,10 +96,7 @@ class FamilyInfo extends Component {
     console.log("clicked5");
     this.setState({ editForm: false });
   };
-  // handleFormClose = () => {
-  //   console.log("clicked1");
-  //   this.setState({ table: true });
-  // };
+  // Func() to send data to API using PUT
   handleFamilyInfoEditUpdate = (info, newInfo) => {
     newInfo.preventDefault();
     console.log("zero data", newInfo.target[0].value);
@@ -101,26 +107,27 @@ class FamilyInfo extends Component {
       Occupation: newInfo.target[3].value,
     };
     console.log("update", body);
+    // func() calling API using PUT method
     axios
       .put(
         process.env.REACT_APP_API_URL + "/api/family-info/" + info["_id"],
-        body, {
-        headers: {
-          authorization: localStorage.getItem("token") || ""
+        body,
+        {
+          headers: {
+            authorization: localStorage.getItem("token") || "",
+          },
         }
-      }
       )
-      .then(res => {
+      .then((res) => {
         this.setState({ table: false });
         this.setState({ table: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 
     this.setState({ editForm: false });
   };
-
 }
 
 export default FamilyInfo;

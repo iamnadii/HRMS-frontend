@@ -11,6 +11,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -19,6 +20,7 @@ const override = css`
 `;
 
 class DepartmentTable extends Component {
+  // Initialize state
   state = {
     departmentData: [],
     loading: true,
@@ -28,16 +30,12 @@ class DepartmentTable extends Component {
         headerName: "Company",
         field: "CompanyName",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
 
       {
         headerName: "Department",
         field: "DepartmentName",
         sortable: true,
-        // width: 150,
-        // filter: true ,
       },
 
       {
@@ -60,7 +58,6 @@ class DepartmentTable extends Component {
       resizable: true,
       width: 590,
       filter: "agTextColumnFilter",
-      // filter: true ,
     },
     getRowHeight: function (params) {
       return 35;
@@ -68,7 +65,7 @@ class DepartmentTable extends Component {
   };
   departmentObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadDepartmentData = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/department", {
@@ -98,7 +95,7 @@ class DepartmentTable extends Component {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onDepartmentDelete = (e) => {
     console.log(e);
     if (window.confirm("Are you sure to delete this record ? ") == true) {
@@ -108,6 +105,7 @@ class DepartmentTable extends Component {
             authorization: localStorage.getItem("token") || "",
           },
         })
+        // if response true then re-render the rest of data
         .then((res) => {
           this.componentDidMount();
         })
@@ -120,10 +118,12 @@ class DepartmentTable extends Component {
         });
     }
   };
+  // func() for just calling another func()
   componentDidMount() {
     this.loadDepartmentData();
   }
 
+  // re-render data
   renderButton(params) {
     console.log(params);
     return (
@@ -158,23 +158,12 @@ class DepartmentTable extends Component {
 
         <div id="clear-both" />
         {!this.state.loading ? (
-          <div
-            id="table-div"
-            className="ag-theme-balham"
-            //   style={
-            //     {
-            //     height: "500px",
-            //     width: "100%"
-            //   }
-            // }
-          >
+          <div id="table-div" className="ag-theme-balham">
             <AgGridReact
               columnDefs={this.state.columnDefs}
               defaultColDef={this.state.defaultColDef}
               columnTypes={this.state.columnTypes}
               rowData={this.state.rowData}
-              // floatingFilter={true}
-              // onGridReady={this.onGridReady}
               pagination={true}
               paginationPageSize={10}
               getRowHeight={this.state.getRowHeight}
@@ -191,60 +180,6 @@ class DepartmentTable extends Component {
             />
           </div>
         )}
-
-        {/* <div id="inner-table-div">
-          <table id="role-table">
-            <thead>
-              <tr>
-                <th width="30%">Company</th>
-                <th width="30%">Department</th>
-                <th width="20%" />
-                <th width="20%" />
-              </tr>
-            </thead>
-            {!this.state.loading ? (
-              <tbody>
-                {this.departmentObj.map((data, index) => (
-                  <tr key={index}>
-                    <td>{data["company"][0]["CompanyName"]}</td>
-                    <td>{data["DepartmentName"]}</td>
-                    <td>
-                      <FontAwesomeIcon
-                        icon={faEdit}
-                        onClick={() => this.props.onEditDepartment(data)}
-                      />
-                    </td>
-                    <td>
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        onClick={() => this.onDepartmentDelete(data["_id"])}
-                      />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            ) : (
-              <tbody>
-                <tr>
-                  <td />
-                  <td>
-                    <div id="loading-bar">
-                      <BarLoader
-                        css={override}
-                        sizeUnit={"px"}
-                        size={150}
-                        color={"#0098f3"}
-                        loading={true}
-                      />
-                    </div>
-                  </td>
-                  <td />
-                  <td />
-                </tr>
-              </tbody>
-            )}
-          </table>
-        </div> */}
       </div>
     );
   }

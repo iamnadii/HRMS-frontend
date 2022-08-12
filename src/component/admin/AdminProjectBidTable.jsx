@@ -11,6 +11,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -19,48 +20,31 @@ const override = css`
 `;
 
 class AdminProjectBidTable extends Component {
+  // Initialize state
   state = {
     projectBidData: [],
     loading: true,
 
     columnDefs: [
-      // {
-      //   headerName: "",
-      //   field: "",
-      //   sortable: true
-      //   // filter: true ,
-      // },
-      // {
-      //   headerName: "",
-      //   field: "",
-      //   sortable: true,
-      //   type: "numberColumn",
-      //   filter: 'agNumberColumnFilter'
-      //   // filter: true ,
-      // },
       {
         headerName: "Project Title",
         field: "ProjectTitle",
         sortable: true,
-        // filter: true ,
       },
       {
         headerName: "Portal",
         field: "PortalName",
         sortable: true,
-        // filter: true ,
       },
       {
         headerName: "Project URL",
         field: "ProjectURL",
         sortable: true,
-        // filter: true ,
       },
       {
         headerName: "Estimated Time",
         field: "EstimatedTime",
         sortable: true,
-        // filter: true ,
       },
       {
         headerName: "Estimated Cost",
@@ -68,13 +52,11 @@ class AdminProjectBidTable extends Component {
         sortable: true,
         type: "numberColumn",
         filter: "agNumberColumnFilter",
-        // filter: true ,
       },
       {
         headerName: "Remark",
         field: "Remark",
         sortable: true,
-        // filter: true ,
       },
 
       {
@@ -97,7 +79,6 @@ class AdminProjectBidTable extends Component {
       resizable: true,
       width: 200,
       filter: "agTextColumnFilter",
-      // filter: true ,
     },
     getRowHeight: function (params) {
       return 35;
@@ -105,17 +86,18 @@ class AdminProjectBidTable extends Component {
   };
   projectBidObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadProjectBidData = () => {
     axios
-      .get(process.env.REACT_APP_API_URL + "/api/admin/project-bid", {
+      .get(process.env.REACT_APP_API_URL + "/api/admin/project", {
         headers: {
           authorization: localStorage.getItem("token") || "",
         },
       })
+      // if response true then re-render the rest of data
       .then((response) => {
-        this.projectBidObj = response.data;
         console.log("response", response.data);
+        this.projectBidObj = response.data;
         this.setState({ projectBidData: response.data });
         this.setState({ loading: false });
         this.rowDataT = [];
@@ -139,16 +121,17 @@ class AdminProjectBidTable extends Component {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onProjectBidDelete = (e) => {
     console.log(e);
     if (window.confirm("Are you sure to delete this record? ") == true) {
       axios
-        .delete(process.env.REACT_APP_API_URL + "/api/admin/project-bid/" + e, {
+        .delete(process.env.REACT_APP_API_URL + "/api/admin/project/" + e, {
           headers: {
             authorization: localStorage.getItem("token") || "",
           },
         })
+        // if response true then re-render the rest of data
         .then((res) => {
           this.componentDidMount();
         })
@@ -157,9 +140,11 @@ class AdminProjectBidTable extends Component {
         });
     }
   };
+  // func() for just calling another func()
   componentDidMount() {
     this.loadProjectBidData();
   }
+  // re-render data
   renderButton(params) {
     console.log(params);
     return (

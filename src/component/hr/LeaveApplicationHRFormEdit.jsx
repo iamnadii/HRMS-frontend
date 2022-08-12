@@ -1,33 +1,18 @@
 import React, { Component } from "react";
-// import "./LeaveApplicationHRFormEdit.css";
-// import { Form,Button } from "react-bootstrap";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 
 class LeaveApplicationHRForm extends Component {
+  // Initialize State
   state = {
-    // LeaveApplicationHRData: this.props.editData["LeaveApplicationHRName"],
-
-    // LeavetypeData: this.props.editData["Leavetype"],
     FromDateData: this.props.editData["FromDate"].slice(0, 10),
     ToDateData: this.props.editData["ToDate"].slice(0, 10),
     ReasonforleaveData: this.props.editData["Reasonforleave"],
     nameData:
       this.props.editData["employee"][0]["FirstName"] +
       " " +
-      this.props.editData["employee"][0]["LastName"]
-    // StatusData: this.props.editData["Status"],
-
-    // value={this.state.CompanyNameData}
-    // onChange={value => this.onCompanyNameDataChange(value)}
+      this.props.editData["employee"][0]["LastName"],
   };
-  //   onLeavetypeDataChange(e) {
-  //     this.setState({ CLeavetypeData: e.target.value });
-  //   }
-
-  //   onStatusDataChange(e) {
-  //     this.setState({StatusData: e.target.value });
-  //   }
 
   componentWillMount() {}
 
@@ -39,9 +24,10 @@ class LeaveApplicationHRForm extends Component {
         </h2>
 
         <div id="role-form-outer-div">
+          {/* Using Bootstrap component */}
           <Form
             id="form"
-            onSubmit={e =>
+            onSubmit={(e) =>
               this.props.onLeaveApplicationHREditUpdate(this.props.editData, e)
             }
           >

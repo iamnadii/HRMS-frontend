@@ -3,7 +3,9 @@ import "./PersonalInfo.css";
 import axios from "axios";
 import PersonalInfoTable from "./PersonalInfoTable.jsx";
 import PersonalInfoFormEdit from "./PersonalInfoFormEdit.jsx";
+
 class PersonalInfo extends Component {
+  // Initialize State
   state = {
     table: true,
     editForm: false,
@@ -36,6 +38,7 @@ class PersonalInfo extends Component {
       </React.Fragment>
     );
   }
+  // Form Handling functions (also setting state inside it)
   handleEditPersonalInfo = (e) => {
     console.log(e);
     console.log("clicked6");
@@ -47,6 +50,7 @@ class PersonalInfo extends Component {
     console.log("clicked5");
     this.setState({ editForm: false });
   };
+  // Func() to send data to API using PUT
   handlePersonalInfoEditUpdate = (info, newInfo) => {
     newInfo.preventDefault();
     console.log("zero data", newInfo.target[0].value);
@@ -63,6 +67,7 @@ class PersonalInfo extends Component {
       PermanetAddress: newInfo.target[13].value,
     };
     console.log("update", body);
+    // func() calling API using PUT method
     axios
       .put(
         process.env.REACT_APP_API_URL +
@@ -86,8 +91,6 @@ class PersonalInfo extends Component {
     this.setState({ editForm: false });
   };
   handleEditFormGenderChange = (e) => {
-    // console.log(e.currentTarget.value);
-    // console.log("ggggggggggggggggggggggggggggeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeennnnnnnnnnnnnnnnnnnnnnnnn")
     this.setState({
       editFormGender: e.currentTarget.value,
     });

@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-// import "./EducationFormEdit.css";
-// import { Form,Button } from "react-bootstrap";
+
 import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 
 class EducationForm extends Component {
+  // Initialize State
   state = {
-    // EducationData: this.props.editData["EducationName"],
-
     SchoolUniversityData: this.props.editData["SchoolUniversity"],
     DegreeData: this.props.editData["Degree"],
     GradeData: this.props.editData["Grade"],
-    PassingOfYearData: this.props.editData["PassingOfYear"]
+    PassingOfYearData: this.props.editData["PassingOfYear"],
   };
+  // func() for onchange
   onSchoolUniversityDataChange(e) {
     this.setState({ SchoolUniversityData: e.target.value });
   }
@@ -26,8 +25,7 @@ class EducationForm extends Component {
     this.setState({ PassingOfYearData: e.target.value });
   }
 
-  componentWillMount() {
-  }
+  componentWillMount() {}
 
   render() {
     return (
@@ -35,9 +33,10 @@ class EducationForm extends Component {
         <h2 id="role-form-title">Edit Education Details</h2>
 
         <div id="role-form-outer-div">
+          {/* Using Bootstrap Component */}
           <Form
             id="form"
-            onSubmit={e =>
+            onSubmit={(e) =>
               this.props.onEducationEditUpdate(this.props.editData, e)
             }
           >
@@ -51,7 +50,7 @@ class EducationForm extends Component {
                   placeholder="School / University "
                   required
                   value={this.state.SchoolUniversityData}
-                  onChange={value => this.onSchoolUniversityDataChange(value)}
+                  onChange={(value) => this.onSchoolUniversityDataChange(value)}
                 />
               </Col>
             </Form.Group>
@@ -65,7 +64,7 @@ class EducationForm extends Component {
                   placeholder="Degree "
                   required
                   value={this.state.DegreeData}
-                  onChange={value => this.onDegreeDataChange(value)}
+                  onChange={(value) => this.onDegreeDataChange(value)}
                 />
               </Col>
             </Form.Group>
@@ -79,7 +78,7 @@ class EducationForm extends Component {
                   placeholder="Grade"
                   required
                   value={this.state.GradeData}
-                  onChange={value => this.onGradeDataChange(value)}
+                  onChange={(value) => this.onGradeDataChange(value)}
                 />
               </Col>
             </Form.Group>
@@ -93,7 +92,7 @@ class EducationForm extends Component {
                   placeholder="Passing Of Year"
                   required
                   value={this.state.PassingOfYearData}
-                  onChange={value => this.onPassingOfYearDataChange(value)}
+                  onChange={(value) => this.onPassingOfYearDataChange(value)}
                 />
               </Col>
             </Form.Group>

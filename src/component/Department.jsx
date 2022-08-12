@@ -4,96 +4,76 @@ import axios from "axios";
 import DepartmentTable from "./DepartmentTable.jsx";
 import DepartmentForm from "./DepartmentForm.jsx";
 import DepartmentFormEdit from "./DepartmentFormEdit.jsx";
-// import { HashRouter as Router, Route, Link } from "react-router-dom";
-
-// function DepartmentTableF() {
-//   return <DepartmentTable/>;
-// }
-// function DepartmentFormF() {
-//   return  <DepartmentForm onDepartmentSubmit={handleDepartmentSubmit}/>;
-// }
-
-// function handleDepartmentSubmit(e) {
-//   e.preventDefault();
-//   console.log(e);
-
-// }
 
 class Department extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
-    editData: {}
+    editData: {},
   };
 
   render() {
-    // let value=(this.props.pass) ? undefined : "";<i class="fas fa-plus"></i>
     return (
       //  <Router>
       <React.Fragment>
         {this.state.table ? (
           this.state.editForm ? (
+            // Calling Component and passing props
             <DepartmentFormEdit
               onDepartmentEditUpdate={this.handleDepartmentEditUpdate}
               onFormEditClose={this.handleEditFormClose}
               editData={this.state.editData}
             />
           ) : (
-              <DepartmentTable
-                onAddDepartment={this.handleAddDepartment}
-                onEditDepartment={this.handleEditDepartment}
-              />
-            )
-        ) : (
-            <DepartmentForm
-              onDepartmentSubmit={this.handleDepartmentSubmit}
-              onFormClose={this.handleFormClose}
+            // Calling Component and passing props
+            <DepartmentTable
+              onAddDepartment={this.handleAddDepartment}
+              onEditDepartment={this.handleEditDepartment}
             />
-          )}
-
-        {/* <div>fenil</div> */}
-        {/* <Route path="/admin/Department/table" exact component={DepartmentTable} /> */}
-        {/* <Route path="/admin/Department/form" exact component={() => <DepartmentForm onDepartmentSubmit={this.handleDepartmentSubmit} />} /> */}
-
-        {/* <DepartmentTable/> */}
+          )
+        ) : (
+          // Calling Component and passing props
+          <DepartmentForm
+            onDepartmentSubmit={this.handleDepartmentSubmit}
+            onFormClose={this.handleFormClose}
+          />
+        )}
       </React.Fragment>
-
-      //  </Router>
     );
   }
-  handleDepartmentSubmit = event => {
+  // Func() to handle input data in role form edit page using axios (CRUD)
+  handleDepartmentSubmit = (event) => {
     event.preventDefault();
     console.log("id", event.target[0].value, event.target[1].value);
     this.setState({ table: true });
 
     let body = {
       CompanyID: event.target[0].value,
-      DepartmentName: event.target[1].value
+      DepartmentName: event.target[1].value,
     };
-    //  let body= "CompanyID=" + event.target[0].value + "&Department=" + event.target[1].value;
-    //  let body= "FenilKaneria";
+    // axios lib of react
     axios
       .post(process.env.REACT_APP_API_URL + "/api/department", body, {
         headers: {
-          authorization: localStorage.getItem("token") || ""
-        }
+          authorization: localStorage.getItem("token") || "",
+        },
       })
-      .then(res => {
+      .then((res) => {
         this.setState({ table: false });
         this.setState({ table: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-    // this.setState({ loading: true });
-    // this.login(event.target[0].value, event.target[1].value);
-    // event.target.reset();
   };
+
+  // Form Handling functions (also setting state inside it)
   handleAddDepartment = () => {
     console.log("clicked1");
     this.setState({ table: false });
   };
-  handleEditDepartment = e => {
+  handleEditDepartment = (e) => {
     console.log(e);
     console.log("clicked6");
     this.setState({ editForm: true });
@@ -111,31 +91,30 @@ class Department extends Component {
     console.log("clicked1");
     this.setState({ table: true });
   };
+  // Func() to send data to API using PUT
   handleDepartmentEditUpdate = (info, newInfo) => {
     newInfo.preventDefault();
-    // this.setState({ table: true });
     let body = {
-      // ...info,CompanyID:formData1,Department:formData2
-
       CompanyID: newInfo.target[0].value,
       DepartmentName: newInfo.target[1].value,
     };
     console.log("update", body);
+    // axios lib of react
     axios
       .put(
         process.env.REACT_APP_API_URL + "/api/department/" + info["_id"],
-        body, {
-        headers: {
-          authorization: localStorage.getItem("token") || ""
+        body,
+        {
+          headers: {
+            authorization: localStorage.getItem("token") || "",
+          },
         }
-      }
       )
-      .then(res => {
-        // this.componentDidMount();
+      .then((res) => {
         this.setState({ table: false });
         this.setState({ table: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 

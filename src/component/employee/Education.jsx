@@ -4,7 +4,9 @@ import axios from "axios";
 import EducationTable from "./EducationTable.jsx";
 import EducationForm from "./EducationForm.jsx";
 import EducationFormEdit from "./EducationFormEdit.jsx";
+
 class Education extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
@@ -14,17 +16,16 @@ class Education extends Component {
   render() {
     return (
       <React.Fragment>
-        {/* <h1>iiiiiiiiiinnnnnnnnnnnnnn{
-          JSON.stringify(this.props.data)}</h1> */}
-
         {this.state.table ? (
           this.state.editForm ? (
+            // Calling Component and passing props
             <EducationFormEdit
               onEducationEditUpdate={this.handleEducationEditUpdate}
               onFormEditClose={this.handleEditFormClose}
               editData={this.state.editData}
             />
           ) : (
+            // Calling Component and passing props
             <EducationTable
               onAddEducation={this.handleAddEducation}
               onEditEducation={this.handleEditEducation}
@@ -33,6 +34,7 @@ class Education extends Component {
             />
           )
         ) : (
+          // Calling Component and passing props
           <EducationForm
             onEducationSubmit={this.handleEducationSubmit}
             onFormClose={this.handleFormClose}
@@ -42,6 +44,7 @@ class Education extends Component {
       </React.Fragment>
     );
   }
+  // Func() to handle input data in role form edit page using axios (CRUD)
   handleEducationSubmit = (event) => {
     event.preventDefault();
     console.log("id", event.target[0].value, event.target[1].value);
@@ -53,6 +56,7 @@ class Education extends Component {
       Grade: event.target[2].value,
       PassingOfYear: event.target[3].value,
     };
+    // axios lib of react
     axios
       .post(
         process.env.REACT_APP_API_URL +
@@ -73,6 +77,7 @@ class Education extends Component {
         console.log(err);
       });
   };
+  // Form Handling functions (also setting state inside it)
   handleAddEducation = () => {
     console.log("clicked1");
     this.setState({ table: false });
@@ -92,10 +97,7 @@ class Education extends Component {
     console.log("clicked5");
     this.setState({ editForm: false });
   };
-  // handleFormClose = () => {
-  //   console.log("clicked1");
-  //   this.setState({ table: true });
-  // };
+  // Func() to send data to API using PUT
   handleEducationEditUpdate = (info, newInfo) => {
     newInfo.preventDefault();
     console.log("zero data", newInfo.target[0].value);
@@ -106,6 +108,7 @@ class Education extends Component {
       PassingOfYear: newInfo.target[3].value,
     };
     console.log("update", body);
+    // axios lib of react
     axios
       .put(
         process.env.REACT_APP_API_URL + "/api/education/" + info["_id"],

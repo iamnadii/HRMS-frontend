@@ -11,6 +11,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -18,6 +19,7 @@ const override = css`
   border-color: red;
 `;
 class AdminCompanyTable extends Component {
+  // Initialize state
   state = {
     companyData: [],
     loading: true,
@@ -27,52 +29,30 @@ class AdminCompanyTable extends Component {
         field: "CompanyName",
         sortable: true,
         width: 150,
-        // filter: true ,
       },
       {
         headerName: "Address",
         field: "Address",
         sortable: true,
-        // filter: true ,
       },
-      // {
-      //   headerName: "Country",
-      //   field: "CountryName",
-      //   sortable: true,
-      //   // filter: true ,
-      // },
-      // {
-      //   headerName: "State",
-      //   field: "StateName",
-      //   sortable: true,
-      //   // filter: true ,
-      // },
-      // {
-      //   headerName: "City",
-      //   field: "CityName",
-      //   sortable: true,
-      //   // filter: true ,
-      // },
+
       {
         headerName: "Postal Code",
         field: "PostalCode",
         sortable: true,
 
         width: 120,
-        // filter: true ,
       },
       {
         headerName: "Website",
         field: "Website",
         sortable: true,
-        // filter: true ,
       },
       {
         headerName: "Email",
         field: "Email",
         sortable: true,
         width: 150,
-        // filter: true ,
       },
       {
         headerName: "Contact Person",
@@ -80,7 +60,6 @@ class AdminCompanyTable extends Component {
         sortable: true,
 
         width: 140,
-        // filter: true ,
       },
       {
         headerName: "Contact No",
@@ -88,32 +67,7 @@ class AdminCompanyTable extends Component {
         sortable: true,
 
         width: 120,
-        // filter: true ,
       },
-      // {
-      //   headerName: "Fax No",
-      //   field: "FaxNo",
-      //   sortable: true,
-      //   // filter: true ,
-      // },
-      // {
-      //   headerName: "Pan No",
-      //   field: "PanNo",
-      //   sortable: true,
-      //   // filter: true ,
-      // },
-      // {
-      //   headerName: "GST No",
-      //   field: "GSTNo",
-      //   sortable: true,
-      //   // filter: true ,
-      // },
-      // {
-      //   headerName: "CIN No",
-      //   field: "CINNo",
-      //   sortable: true,
-      //   // filter: true ,
-      // },
 
       {
         headerName: "",
@@ -135,7 +89,6 @@ class AdminCompanyTable extends Component {
       resizable: true,
       width: 110,
       filter: "agTextColumnFilter",
-      // filter: true ,
     },
     getRowHeight: function (params) {
       return 35;
@@ -143,7 +96,7 @@ class AdminCompanyTable extends Component {
   };
   companyObj = [];
   rowDataT = [];
-
+  // func() to get data through GET method of API
   loadCompanyData = () => {
     axios
       .get(process.env.REACT_APP_API_URL + "/api/company/", {
@@ -164,19 +117,11 @@ class AdminCompanyTable extends Component {
             data,
             CompanyName: data["CompanyName"],
             Address: data["Address"],
-            // CountryName:
-            //   data["city"][0]["state"][0]["country"][0]["CountryName"],
-            // StateName: data["city"][0]["state"][0]["StateName"],
-            // CityName: data["city"][0]["CityName"],
             PostalCode: data["PostalCode"],
             Website: data["Website"],
             Email: data["Email"],
             ContactPerson: data["ContactPerson"],
             ContactNo: data["ContactNo"],
-            // FaxNo: data["FaxNo"],
-            // PanNo: data["PanNo"],
-            // GSTNo: data["GSTNo"],
-            // CINNo: data["CINNo"],
           };
 
           this.rowDataT.push(temp);
@@ -187,7 +132,7 @@ class AdminCompanyTable extends Component {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onCompanyDelete = (e) => {
     console.log(e);
     if (window.confirm("Are you sure to delete this record? ") === true) {
@@ -197,6 +142,7 @@ class AdminCompanyTable extends Component {
             authorization: localStorage.getItem("token") || "",
           },
         })
+        // if response true then re-render the rest of data
         .then((res) => {
           this.componentDidMount();
         })
@@ -205,10 +151,11 @@ class AdminCompanyTable extends Component {
         });
     }
   };
+  // func() for just calling another func()
   componentDidMount() {
     this.loadCompanyData();
   }
-
+  // re-render data
   renderButton(params) {
     console.log(params);
     return (

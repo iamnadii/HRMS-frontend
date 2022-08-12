@@ -2,89 +2,88 @@ import React, { Component } from "react";
 import "./LeaveApplicationHR.css";
 import axios from "axios";
 import LeaveApplicationHRTable from "./LeaveApplicationHRTable.jsx";
-// import LeaveApplicationHRForm from "./LeaveApplicationHRForm.jsx";
 import LeaveApplicationHRFormEdit from "./LeaveApplicationHRFormEdit.jsx";
+
 class LeaveApplicationHR extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
     editData: {},
-
   };
 
   render() {
     return (
       <React.Fragment>
-        {/* <h1>iiiiiiiiiinnnnnnnnnnnnnn{
-          JSON.stringify(this.props.data)}</h1> */}
-
         {this.state.table ? (
           this.state.editForm ? (
+            // Calling Component and passing props
             <LeaveApplicationHRFormEdit
-              onLeaveApplicationHREditUpdate={this.handleLeaveApplicationHREditUpdate}
+              onLeaveApplicationHREditUpdate={
+                this.handleLeaveApplicationHREditUpdate
+              }
               onFormEditClose={this.handleEditFormClose}
               editData={this.state.editData}
             />
           ) : (
-              <LeaveApplicationHRTable
-                onAddLeaveApplicationHR={this.handleAddLeaveApplicationHR}
-                onEditLeaveApplicationHR={this.handleEditLeaveApplicationHR}
-                data={this.props.data}
-              />
-            )
+            // Calling Component and passing props
+            <LeaveApplicationHRTable
+              onAddLeaveApplicationHR={this.handleAddLeaveApplicationHR}
+              onEditLeaveApplicationHR={this.handleEditLeaveApplicationHR}
+              data={this.props.data}
+            />
+          )
         ) : (
-            <div></div>
-            //   <LeaveApplicationHRForm
-            //     onLeaveApplicationHRSubmit={this.handleLeaveApplicationHRSubmit}
-            //     onFormClose={this.handleFormClose}
-            //     onGenderChange={this.handleAddFormGenderChange}
-            //   />
-          )}
+          <div></div>
+        )}
       </React.Fragment>
     );
   }
-  handleLeaveApplicationHRSubmit = event => {
+  // Func() to handle input data in role form edit page using axios (CRUD)
+  handleLeaveApplicationHRSubmit = (event) => {
     event.preventDefault();
     console.log("id", event.target[0].value, event.target[1].value);
     this.setState({ table: true });
 
     let body = {
-
-      //  CompanyName: event.target[0].value,
-      //  Designation:  event.target[1].value,
-      //  FromDate:  event.target[2].value,
-      //  ToDate:  event.target[3].value,
-
       Leavetype: event.target[0].value,
       FromDate: event.target[1].value,
       ToDate: event.target[2].value,
       Reasonforleave: event.target[3].value,
       Status: event.target[4].value,
     };
+    // axios lib of react
     axios
-      .post(process.env.REACT_APP_API_URL + "/api/leave-application-hr/" + this.props.data["_id"], body, {
-        headers: {
-          authorization: localStorage.getItem("token") || ""
+      .post(
+        process.env.REACT_APP_API_URL +
+          "/api/leave/hr/" +
+          this.props.data["_id"],
+        body,
+        {
+          headers: {
+            authorization: localStorage.getItem("token") || "",
+          },
         }
-      })
-      .then(res => {
+      )
+      .then((res) => {
         this.setState({ table: false });
         this.setState({ table: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
+  // Form Handling functions (also setting state inside it)
   handleAddLeaveApplicationHR = () => {
     console.log("clicked1");
     this.setState({ table: false });
   };
-  handleEditLeaveApplicationHR = e => {
+  handleEditLeaveApplicationHR = (e) => {
     console.log(e);
     console.log("clicked6");
     this.setState({ editForm: true });
     this.setState({ editData: e });
-    this.setState({ editFormGender: e["Gender"] })
+    this.setState({ editFormGender: e["Gender"] });
   };
   handleFormClose = () => {
     console.log("clicked1");
@@ -94,10 +93,7 @@ class LeaveApplicationHR extends Component {
     console.log("clicked5");
     this.setState({ editForm: false });
   };
-  // handleFormClose = () => {
-  //   console.log("clicked1");
-  //   this.setState({ table: true });
-  // };
+  // Func() to send data to API using PUT
   handleLeaveApplicationHREditUpdate = (info, newInfo) => {
     newInfo.preventDefault();
     console.log("zero data", newInfo.target[0].value);
@@ -105,26 +101,27 @@ class LeaveApplicationHR extends Component {
       Status: newInfo.target[4].value,
     };
     console.log("update", body);
+    // axios lib of react
     axios
       .put(
-        process.env.REACT_APP_API_URL + "/api/leave-application-hr/" + info["_id"],
-        body, {
-        headers: {
-          authorization: localStorage.getItem("token") || ""
+        process.env.REACT_APP_API_URL + "/api/leave/hr/" + info["_id"],
+        body,
+        {
+          headers: {
+            authorization: localStorage.getItem("token") || "",
+          },
         }
-      }
       )
-      .then(res => {
+      .then((res) => {
         this.setState({ table: false });
         this.setState({ table: true });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 
     this.setState({ editForm: false });
   };
-
 }
 
 export default LeaveApplicationHR;

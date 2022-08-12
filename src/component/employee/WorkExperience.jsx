@@ -4,7 +4,9 @@ import axios from "axios";
 import WorkExperienceTable from "./WorkExperienceTable.jsx";
 import WorkExperienceForm from "./WorkExperienceForm.jsx";
 import WorkExperienceFormEdit from "./WorkExperienceFormEdit.jsx";
+
 class WorkExperience extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
@@ -14,17 +16,16 @@ class WorkExperience extends Component {
   render() {
     return (
       <React.Fragment>
-        {/* <h1>iiiiiiiiiinnnnnnnnnnnnnn{
-          JSON.stringify(this.props.data)}</h1> */}
-
         {this.state.table ? (
           this.state.editForm ? (
+            // Calling Component and passing props
             <WorkExperienceFormEdit
               onWorkExperienceEditUpdate={this.handleWorkExperienceEditUpdate}
               onFormEditClose={this.handleEditFormClose}
               editData={this.state.editData}
             />
           ) : (
+            // Calling Component and passing props
             <WorkExperienceTable
               onAddWorkExperience={this.handleAddWorkExperience}
               onEditWorkExperience={this.handleEditWorkExperience}
@@ -33,6 +34,7 @@ class WorkExperience extends Component {
             />
           )
         ) : (
+          // Calling Component and passing props
           <WorkExperienceForm
             onWorkExperienceSubmit={this.handleWorkExperienceSubmit}
             onFormClose={this.handleFormClose}
@@ -42,6 +44,7 @@ class WorkExperience extends Component {
       </React.Fragment>
     );
   }
+  // Func() to handle input data in role form edit page using axios (CRUD)
   handleWorkExperienceSubmit = (event) => {
     event.preventDefault();
     console.log("id", event.target[0].value, event.target[1].value);
@@ -53,6 +56,7 @@ class WorkExperience extends Component {
       FromDate: event.target[2].value,
       ToDate: event.target[3].value,
     };
+    // axios lib of react
     axios
       .post(
         process.env.REACT_APP_API_URL +
@@ -73,6 +77,7 @@ class WorkExperience extends Component {
         console.log(err);
       });
   };
+  // Form Handling functions (also setting state inside it)
   handleAddWorkExperience = () => {
     console.log("clicked1");
     this.setState({ table: false });
@@ -92,10 +97,7 @@ class WorkExperience extends Component {
     console.log("clicked5");
     this.setState({ editForm: false });
   };
-  // handleFormClose = () => {
-  //   console.log("clicked1");
-  //   this.setState({ table: true });
-  // };
+  // Func() to send data to API using PUT
   handleWorkExperienceEditUpdate = (info, newInfo) => {
     newInfo.preventDefault();
     console.log("zero data", newInfo.target[0].value);
@@ -106,6 +108,7 @@ class WorkExperience extends Component {
       ToDate: newInfo.target[3].value,
     };
     console.log("update", body);
+    // axios lib of react
     axios
       .put(
         process.env.REACT_APP_API_URL + "/api/experience/" + info["_id"],

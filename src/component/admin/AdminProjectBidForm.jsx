@@ -7,33 +7,36 @@ import { Form, Button, Col, Row } from "react-bootstrap";
 class AdminProjectBidForm extends Component {
   state = {
     status: "",
-    portalsInfo: []
+    portalsInfo: [],
   };
   portalsData = [];
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
-      status: event.target.value
+      status: event.target.value,
     });
   };
+  // func() calling API using GET method
   loadPortalsInfo = () => {
     axios
-      .get(process.env.REACT_APP_API_URL + "/api/admin/portal", {
+      .get(process.env.REACT_APP_API_URL + "/api/admin/portal/", {
         headers: {
-          authorization: localStorage.getItem("token") || ""
-        }
+          authorization: localStorage.getItem("token") || "",
+        },
       })
-      .then(response => {
-        // i
+      .then((response) => {
         this.portalsData = response.data;
 
-        this.portalsData = this.portalsData.filter(data => data["Status"] == 1);
+        this.portalsData = this.portalsData.filter(
+          (data) => data["Status"] == 1
+        );
 
         this.setState({ portalsInfo: response.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
+  // func() calling another func()
   componentDidMount() {
     this.loadPortalsInfo();
   }
@@ -41,10 +44,9 @@ class AdminProjectBidForm extends Component {
     return (
       <React.Fragment>
         <h2 id="role-form-title">Add Project Bid Details</h2>
-        {/* <div id="role-form-outer-div">
-          <div id="role-form-inner-div"> */}
 
         <div id="role-form-outer-div">
+          {/* Using Bootstrap component */}
           <Form id="form" onSubmit={this.props.onProjectBidSubmit}>
             <Form.Group as={Row}>
               <Form.Label column sm={2}>

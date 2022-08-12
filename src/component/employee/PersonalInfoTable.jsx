@@ -12,6 +12,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
+// Class base component
 const override = css`
   display: block;
   margin: 0 auto;
@@ -20,6 +21,7 @@ const override = css`
 `;
 
 class PersonalInfoTable extends Component {
+  // Initialize state
   state = {
     personalInfoData: [],
     loading: true,
@@ -29,52 +31,41 @@ class PersonalInfoTable extends Component {
         headerName: "First Name",
         field: "FirstName",
         sortable: true,
-        // filter: true ,
+
         width: 110,
       },
       {
         headerName: "Middle Name",
         field: "MiddleName",
         sortable: true,
-        // filter: true ,
+
         width: 130,
       },
       {
         headerName: "Last Name",
         field: "LastName",
         sortable: true,
-        // filter: true ,
-        // width: 150,
       },
       {
         headerName: "Gender",
         field: "Gender",
         sortable: true,
         width: 90,
-
-        // filter: true ,
-        // width: 150,
       },
       {
         headerName: "Contact No",
         field: "ContactNo",
         sortable: true,
-        // filter: true ,
-        // width: 150,
       },
       {
         headerName: "Email",
         field: "Email",
         sortable: true,
-        // filter: true ,
-        // width: 150,
       },
       {
-        headerName: "PANcard No",
-        field: "PANcardNo",
+        headerName: "CNIC",
+        field: "CNIC",
         sortable: true,
-        // filter: true ,
-        // width: 150,
       },
 
       {
@@ -89,14 +80,12 @@ class PersonalInfoTable extends Component {
         headerName: "Hobbies",
         field: "Hobbies",
         sortable: true,
-        // filter: true ,
-        // width: 150,
       },
       {
         headerName: "Present Address",
         field: "PresentAddress",
         sortable: true,
-        // filter: true ,
+
         width: 150,
       },
       {
@@ -104,10 +93,7 @@ class PersonalInfoTable extends Component {
         field: "edit",
         filter: false,
         width: 30,
-        // cellRenderer:this.ageCellRendererFunc,
-        // cellRendererFramework: function(params) {
-        //   return <button OnClick={console.log("pa",params)}>Test</button>;
-        // },
+
         cellRendererFramework: this.renderEditButton.bind(this),
       },
     ],
@@ -116,7 +102,6 @@ class PersonalInfoTable extends Component {
       resizable: true,
       width: 120,
       filter: "agTextColumnFilter",
-      // filter: true ,
     },
     getRowHeight: function (params) {
       return 35;
@@ -124,6 +109,7 @@ class PersonalInfoTable extends Component {
   };
   personalInfoObj = [];
   rowDataT = [];
+  // func() to get data through GET method of API
   loadPersonalInfoData = () => {
     axios
       .get(
@@ -153,7 +139,7 @@ class PersonalInfoTable extends Component {
           Gender: data["Gender"] || "Not Avaiable",
           ContactNo: data["ContactNo"] || "Not Avaiable",
           Email: data["Email"] || "Not Avaiable",
-          PANcardNo: data["PANcardNo"] || "Not Avaiable",
+          CNIC: data["PANcardNo"] || "Not Avaiable",
           DOB: data["DOB"].slice(0, 10) || "Not Avaiable",
           Hobbies: data["Hobbies"] || "Not Avaiable",
           PresentAddress: data["PresentAddress"] || "Not Avaiable",
@@ -162,13 +148,12 @@ class PersonalInfoTable extends Component {
         this.rowDataT.push(temp);
         // });
         this.setState({ rowData: this.rowDataT });
-        // console.log("rowData",this.state.rowData)
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
+  // func() using API Delete method to delete data
   onPersonalInfoDelete = (e) => {
     console.log(e);
     if (window.confirm("Are you sure to delete this record? ") == true) {
@@ -178,6 +163,7 @@ class PersonalInfoTable extends Component {
             authorization: localStorage.getItem("token") || "",
           },
         })
+        // if response true then re-render the rest of data
         .then((res) => {
           this.componentDidMount();
         })
@@ -189,6 +175,7 @@ class PersonalInfoTable extends Component {
   componentDidMount() {
     this.loadPersonalInfoData();
   }
+  // re-render data
   renderEditButton(params) {
     console.log(params);
     if (this.props.back) {
@@ -214,15 +201,6 @@ class PersonalInfoTable extends Component {
               this.props.data["LastName"]
             : ""}
         </h2>
-        {/* 
-        <Button
-          variant="primary"
-          id="add-button"
-          onClick={this.props.onAddPersonalInfo}
-        >
-          <FontAwesomeIcon icon={faPlus} id="plus-icon" />
-          Add
-        </Button> */}
         {this.props.back ? (
           <Link to="/hr/employee">
             <Button variant="primary" id="add-button">
@@ -236,23 +214,12 @@ class PersonalInfoTable extends Component {
         <div id="clear-both" />
 
         {!this.state.loading ? (
-          <div
-            id="table-div"
-            className="ag-theme-balham"
-            //   style={
-            //     {
-            //     height: "500px",
-            //     width: "100%"
-            //   }
-            // }
-          >
+          <div id="table-div" className="ag-theme-balham">
             <AgGridReact
               columnDefs={this.state.columnDefs}
               defaultColDef={this.state.defaultColDef}
               columnTypes={this.state.columnTypes}
               rowData={this.state.rowData}
-              // floatingFilter={true}
-              // onGridReady={this.onGridReady}
               pagination={true}
               paginationPageSize={10}
               getRowHeight={this.state.getRowHeight}

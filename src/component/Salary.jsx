@@ -4,7 +4,9 @@ import axios from "axios";
 import SalaryTable from "./SalaryTable.jsx";
 import SalaryForm from "./SalaryForm.jsx";
 import SalaryFormEdit from "./SalaryFormEdit.jsx";
+
 class Salary extends Component {
+  // Initialize state
   state = {
     table: true,
     editForm: false,
@@ -15,6 +17,7 @@ class Salary extends Component {
       <React.Fragment>
         {this.state.table ? (
           this.state.editForm ? (
+            // Calling Component and passing props
             <SalaryFormEdit
               onSalaryEditUpdate={this.handleSalaryEditUpdate}
               onFormEditClose={this.handleEditFormClose}
@@ -22,12 +25,14 @@ class Salary extends Component {
               onGenderChange={this.handleEditFormGenderChange}
             />
           ) : (
+            // Calling Component and passing props
             <SalaryTable
               onAddSalary={this.handleAddSalary}
               onEditSalary={this.handleEditSalary}
             />
           )
         ) : (
+          // Calling Component and passing props
           <SalaryForm
             onSalarySubmit={this.handleSalarySubmit}
             onFormClose={this.handleFormClose}
@@ -37,6 +42,7 @@ class Salary extends Component {
       </React.Fragment>
     );
   }
+  // Func() to handle input data in role form edit page using axios (CRUD)
   handleSalarySubmit = (event) => {
     console.log(event);
     event.preventDefault();
@@ -47,30 +53,13 @@ class Salary extends Component {
       this.setState({ table: true });
 
       let body = {
-        // Status:this.state.editFormStatus,
-
-        // DateOfJoining: { type: Date, required: true },
-        // TerminateDate: { type: Date },
-
-        // SalaryName: event.target[0].value,
-        // Address: event.target[1].value,
-        // CityID:event.target[4].value,
-        // PostalCode: event.target[5].value,
-        // Website: event.target[6].value,
-        // Email: event.target[7].value,
-        // ContactPerson: event.target[8].value,
-        // ContactNo: event.target[9].value,
-        // FaxNo: event.target[10].value,
-        // PanNo: event.target[11].value,
-        // GSTNo: event.target[12].value,
-        // CINNo: event.target[13].value,
-
         BasicSalary: event.target[1].value,
         BankName: event.target[2].value,
         AccountNo: event.target[3].value,
         AccountHolderName: event.target[5].value,
-        TaxDeduction: event.target[7].value,
+        TaxDeduction: event.target[6].value,
       };
+      // axios lib of react
       axios
         .post(
           process.env.REACT_APP_API_URL +
@@ -96,6 +85,7 @@ class Salary extends Component {
         });
     }
   };
+  // Form Handling functions (also setting state inside it)
   handleAddSalary = () => {
     console.log("clicked1");
     this.setState({ table: false });
@@ -114,7 +104,7 @@ class Salary extends Component {
     console.log("clicked5");
     this.setState({ editForm: false });
   };
-
+  // Func() to send data to API using PUT
   handleSalaryEditUpdate = (info, newInfo) => {
     console.log(newInfo);
     console.log("eeeeeeeeeeeeeeeeeeeeddddddddddddddddddddddddd");
@@ -130,6 +120,7 @@ class Salary extends Component {
         TaxDeduction: newInfo.target[6].value,
       };
       console.log("update", body);
+      // axios lib of react
       axios
         .put(
           process.env.REACT_APP_API_URL +

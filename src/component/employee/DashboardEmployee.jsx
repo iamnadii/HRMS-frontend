@@ -26,18 +26,12 @@ class DashboardHR extends Component {
     redirect: true,
     checked: true,
   };
+  // Func to handle either diplay sidebar or not
   handleChange = (checked) => {
     console.log("switch");
-    // var sidebarV = this.refs.sidebar;
-    // var sidebarV = React.findDOMNode( this.refs.sidebar);
-    // sidebarV.style.disply="none";
-
     if (this.state.checked == true) {
-      // document.getElementById("sidebar").setAttribute("style", "display:none")
       document.getElementById("sidebar").setAttribute("class", "display-none");
-    }
-    // document.getElementById("sidebar").setAttribute("style", "display:block");
-    else {
+    } else {
       document.getElementById("sidebar").setAttribute("class", "display-block");
     }
     this.setState({ checked });
@@ -46,11 +40,8 @@ class DashboardHR extends Component {
   render() {
     return (
       <Router>
-        {/* <Redirect to='/login'  /> */}
-
         <div id="outer-main-div">
           <div id="outer-nav">
-            {/* <NavBar loginInfo={this.props.data} /> */}
             <NavBar
               loginInfo={this.props.data}
               checked={this.state.checked}
@@ -110,7 +101,7 @@ class DashboardHR extends Component {
                       icon={faBriefcase}
                       className="sidebar-icon"
                     />
-                    WorkExp
+                    WorkExperience
                   </Link>
                 </li>
                 <li>
@@ -131,17 +122,10 @@ class DashboardHR extends Component {
                 </li>
               </ul>
             </div>
-            {/* <div id="sidebar-top-content" /> */}
             <div id="main-area">
               <div id="sidebar-top-content" />
-              {/* //table */}
-              {/* <RoleHR/> */}
+              {/* Switch pages according to path */}
               <Switch>
-                {/* <Route
-                  path="/employee/:id/personal-info"
-                  exact
-                  component={PersonalInfoF}
-                /> */}
                 <Route
                   exact
                   path="/employee/:id/personal-info"
@@ -177,26 +161,7 @@ class DashboardHR extends Component {
                     <LeaveApplicationEmp data={this.props.data} />
                   )}
                 />
-
-                {/* <Route
-                  exact
-                  path="/employee"
-                  render={() => (
-                    <Redirect
-                      to={
-                        "/employee/" +
-                        this.props.data["_id"] +
-                        "/personal-info"
-                      }
-                    />
-                  )}
-                /> */}
-                <Route
-                  render={
-                    () => <NotFound404 />
-                    // <Redirect to={"/employee/"+ this.props.data["_id"]+"/personal-info"} />
-                  }
-                />
+                <Route render={() => <NotFound404 />} />
               </Switch>
             </div>
           </div>
